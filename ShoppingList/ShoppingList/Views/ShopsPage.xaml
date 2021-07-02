@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShoppingList.Views.ShopsPage"
+             Background="#121212"
+             xmlns:vm="clr-namespace:ShoppingList.ViewModels"
+             Title ="Lista sklepów"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Name="Shops">
+
+    <ContentPage.BindingContext>
+        <vm:ShopsViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Accent">#96d1ff</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <AbsoluteLayout>
+        <StackLayout Margin="10,10,10,10"
+                     AbsoluteLayout.LayoutFlags="All"
+                     AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <CollectionView ItemsSource="{Binding Shops}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                          Command="{Binding Path=BindingContext.Test, Source={x:Reference Shops}}"
+                                                          CommandParameter="{Binding .}"/>
+                            </SwipeView.GestureRecognizers>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItemView>
+                                        <StackLayout Orientation="Horizontal"
+                                                     VerticalOptions="Fill"
+                                                     HorizontalOptions="Fill"
+                                                     Margin="0,5,5,5">
+                                            <Frame CornerRadius="10" 
+                                                   Padding="0">
+
+                                                <StackLayout Orientation="Horizontal"
+                                                             BackgroundColor="#303F9F">
+                                                    <Image Source="edit_white.png"
+                                                           Margin="10,0,0,0"
+                                                           HeightRequest="20"
+                                                           WidthRequest="20"/>
+                                                    <Label  Text="Edytuj"
+                                                            FontSize="15"
+                                                            TextColor="White"
+                                                            VerticalTextAlignment="Center"
+                                                            HorizontalTextAlignment="Center"
+                                                            Margin="0,10,10,10"/>
+                                                </StackLayout>
+                                            </Frame>
+                                            <Frame CornerRadius="10"
+                                                   Padding="0">
+
+                                                <StackLayout Orientation="Horizontal"
+                                                             BackgroundColor="#C62828">
+                                                    <Image Source="thrash_white.png"
+                                                           Margin="10,0,0,0"
+                                                           HeightRequest="20"
+                                                           WidthRequest="20"/>
+                                                    <Label  Text="Usuń"
+                                                            FontSize="15"
+                                                            VerticalTextAlignment="Center"
+                                                            HorizontalTextAlignment="Center"
+                                                            TextColor="White"
+                                                            Margin="0,10,10,10" />
+                                                </StackLayout>
+                                            </Frame>
+                                        </StackLayout>
+                                    </SwipeItemView>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <ContentView Padding="5"
+                                         xct:TouchEffect.PressedOpacity="0.6">
+                                <Frame Padding="10"
+                                       BackgroundColor="{StaticResource BackgroundSecondary}"
+                                       CornerRadius="10">
+                                    <StackLayout Orientation="Horizontal">
+                                        <StackLayout VerticalOptions="Center"
+                                                     Margin="0,0,20,0">
+                                            <Label Text="{Binding Number}"
+                                                   FontSize="50"
+                                                   TextColor="{StaticResource ColorPrimary}"/>
+                                        </StackLayout>
+                                        <StackLayout>
+                                            <StackLayout>
+                                                <Label Text="{Binding Name}"
+                                                       Margin="0,5,0,0"
+                                                       FontSize="22"
+                                                       TextColor="{StaticResource TextPrimary}"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Vertical"
+                                                         VerticalOptions="EndAndExpand">
+                                                <StackLayout Orientation="Horizontal"
+                                                             VerticalOptions="End">
+                                                    <Label Text="Liczba rzeczy do kupienia: "
+                                                           Margin="0,0,0,5"
+                                                           FontSize="13"
+                                                           TextColor="{StaticResource TextSecondary}"
+                                                           FontAttributes="Italic"/>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
+                            </ContentView>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+
+        <ImageButton Source="plus.png"
+                     BackgroundColor="Transparent"
+                     AbsoluteLayout.LayoutFlags="PositionProportional"
+                     AbsoluteLayout.LayoutBounds=".95,.95,60,60"
+                     />
+
+    </AbsoluteLayout>
+
+
+</ContentPage>
