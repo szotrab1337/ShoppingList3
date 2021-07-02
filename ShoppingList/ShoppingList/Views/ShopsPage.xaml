@@ -19,6 +19,7 @@
     </ContentPage.Resources>
 
     <AbsoluteLayout>
+        
         <StackLayout Margin="10,10,10,10"
                      AbsoluteLayout.LayoutFlags="All"
                      AbsoluteLayout.LayoutBounds="0,0,1,1">
@@ -123,6 +124,4 @@
                      />
 
     </AbsoluteLayout>
-
-
 </ContentPage>
