@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xct:Popup
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    xmlns:local="clr-namespace:ShoppingList.Models"
+    x:TypeArguments="local:Shop"
+    x:Class="ShoppingList.Views.AddEditShopPopup"
+    IsLightDismissEnabled="False"
+    Size="300,300">
+
+    <StackLayout Orientation="Vertical"
+                 VerticalOptions="Fill"
+                 BackgroundColor="{StaticResource BackgroundSecondary}"
+                 Padding="30,20,30,30">
+        <StackLayout VerticalOptions="CenterAndExpand"
+                     Spacing="50">
+            <Label x:Name="Title"
+                   TextColor="{StaticResource TextPrimary}"
+                   FontSize="28" 
+                   VerticalOptions="Start"
+                   HorizontalOptions="Center"/>
+            <Entry x:Name="Name"
+                   TextColor="{StaticResource TextPrimary}"
+                   Placeholder="nazwa sklepu"
+                   PlaceholderColor="{StaticResource TextSecondary}"
+                   HorizontalTextAlignment="Center"
+                   TextChanged="Name_TextChanged">
+            </Entry>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal"
+                     VerticalOptions="EndAndExpand" 
+                     HorizontalOptions="CenterAndExpand" Spacing="50">
+            <Button Text="Anuluj" 
+                    Clicked="Cancel_Clicked"
+                    BackgroundColor="{StaticResource Delete}" 
+                    TextColor="{StaticResource TextPrimary}"/>
+            <Button Text="Zapisz" 
+                    Clicked="Confirm_Clicked"
+                    BackgroundColor="{StaticResource Confirm}"
+                    TextColor="{StaticResource TextPrimary}"
+                    x:Name="SaveButton">
+            </Button>
+        </StackLayout>
+    </StackLayout>
+
+</xct:Popup>

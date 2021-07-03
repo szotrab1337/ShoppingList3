@@ -17,6 +17,8 @@
             <Color x:Key="TextDisabled">#616161</Color>
             <Color x:Key="BackgroundPrimary">#121212</Color>
             <Color x:Key="BackgroundSecondary">#1f1f1f</Color>
+            <Color x:Key="Delete">#C62B28</Color>
+            <Color x:Key="Confirm">#00897B</Color>
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="{StaticResource BackgroundPrimary}"></Setter>
                 <Setter Property="VisualStateManager.VisualStateGroups">

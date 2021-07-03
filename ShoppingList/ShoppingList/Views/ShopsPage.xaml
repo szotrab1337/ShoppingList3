@@ -4,13 +4,9 @@
              x:Class="ShoppingList.Views.ShopsPage"
              Background="#121212"
              xmlns:vm="clr-namespace:ShoppingList.ViewModels"
-             Title ="Lista sklepów"
+             Title ="{Binding Title}"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Name="Shops">
-
-    <ContentPage.BindingContext>
-        <vm:ShopsViewModel />
-    </ContentPage.BindingContext>
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -29,8 +25,8 @@
                         <SwipeView>
                             <SwipeView.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                          Command="{Binding Path=BindingContext.Test, Source={x:Reference Shops}}"
-                                                          CommandParameter="{Binding .}"/>
+                                                      Command="{Binding Path=BindingContext.OpenShopCommand, Source={x:Reference Shops}}"
+                                                      CommandParameter="{Binding .}"/>
                             </SwipeView.GestureRecognizers>
                             <SwipeView.RightItems>
                                 <SwipeItems>
@@ -47,31 +43,75 @@
                                                     <Image Source="edit_white.png"
                                                            Margin="10,0,0,0"
                                                            HeightRequest="20"
-                                                           WidthRequest="20"/>
+                                                           WidthRequest="20">
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.EditShopCommand, Source={x:Reference Shops}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
                                                     <Label  Text="Edytuj"
                                                             FontSize="15"
                                                             TextColor="White"
                                                             VerticalTextAlignment="Center"
                                                             HorizontalTextAlignment="Center"
-                                                            Margin="0,10,10,10"/>
+                                                            Margin="0,10,10,10">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.EditShopCommand, Source={x:Reference Shops}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <StackLayout.GestureRecognizers>
+                                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.EditShopCommand, Source={x:Reference Shops}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                    </StackLayout.GestureRecognizers>
                                                 </StackLayout>
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.EditShopCommand, Source={x:Reference Shops}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                </Frame.GestureRecognizers>
                                             </Frame>
                                             <Frame CornerRadius="10"
                                                    Padding="0">
 
                                                 <StackLayout Orientation="Horizontal"
-                                                             BackgroundColor="#C62828">
+                                                             BackgroundColor="#C62B28">
                                                     <Image Source="thrash_white.png"
                                                            Margin="10,0,0,0"
                                                            HeightRequest="20"
-                                                           WidthRequest="20"/>
+                                                           WidthRequest="20">
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
                                                     <Label  Text="Usuń"
                                                             FontSize="15"
                                                             VerticalTextAlignment="Center"
                                                             HorizontalTextAlignment="Center"
                                                             TextColor="White"
-                                                            Margin="0,10,10,10" />
+                                                            Margin="0,10,10,10" >
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <StackLayout.GestureRecognizers>
+                                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                    </StackLayout.GestureRecognizers>
                                                 </StackLayout>
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                </Frame.GestureRecognizers>
                                             </Frame>
                                         </StackLayout>
                                     </SwipeItemView>
@@ -121,7 +161,7 @@
                      BackgroundColor="Transparent"
                      AbsoluteLayout.LayoutFlags="PositionProportional"
                      AbsoluteLayout.LayoutBounds=".95,.95,60,60"
-                     />
+                     Command="{Binding AddShopCommand}"/>
 
     </AbsoluteLayout>
 </ContentPage>

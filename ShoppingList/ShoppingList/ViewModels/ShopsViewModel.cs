@@ -1,24 +1,40 @@
 ﻿using Acr.UserDialogs;
 using ShoppingList.Models;
+using ShoppingList.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
 
 namespace ShoppingList.ViewModels
 {
     public class ShopsViewModel : BaseViewModel
     {
-        public ShopsViewModel()
+        public ShopsViewModel(INavigation navigation)
         {
-            Title = "About";
-            Test = new Command(Test1);
+            this.Navigation = navigation;
 
-            Shops = new ObservableCollection<Shop>();
-            AddShops();
+            Title = "Lista sklepów";
+            
+
+            OpenShopCommand = new Command(OpenShopAction);
+            AddShopCommand = new Command(AddShopAction);
+            EditShopCommand = new Command(EditShopAction);
+            DeleteShopCommand = new Command(DeleteShopAction);
+
+            LoadShops();
         }
+
+        public INavigation Navigation { get; set; }
+
+        public ICommand OpenShopCommand { get; set; }
+        public ICommand AddShopCommand { get; set; }
+        public ICommand EditShopCommand { get; set; }
+        public ICommand DeleteShopCommand { get; set; }
 
         public ObservableCollection<Shop> Shops
         {
@@ -27,40 +43,114 @@ namespace ShoppingList.ViewModels
         }
         private ObservableCollection<Shop> _Shops;
 
-        public void AddShops()
+        public async void LoadShops()
         {
-            Shops.Add(new Shop()
+            try
             {
-                ShopId = 1,
-                CreatedOn = DateTime.Now,
-                Name = "Sklep 1",
-                Number = 1
-            });
+                UserDialogs.Instance.ShowLoading("Ładowanie...", MaskType.Black);
 
-            Shops.Add(new Shop()
-            {
-                ShopId = 2,
-                CreatedOn = DateTime.Now,
-                Name = "Sklep 2",
-                Number = 2
-            });
+                Shops = new ObservableCollection<Shop>(await App.Database.GetShopsAsync());
+                AssignNumbers();
 
-            Shops.Add(new Shop()
+                UserDialogs.Instance.HideLoading();
+            }
+            catch (Exception ex)
             {
-                ShopId = 3,
-                CreatedOn = DateTime.Now,
-                Name = "Sklep 3",
-                Number = 3
-            });
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
         }
 
-        public ICommand Test { get; set; }
-
-        public void Test1(object sender)
+        private void AssignNumbers()
         {
-            Shop shop = (Shop)sender;
-
-            //UserDialogs.Instance.Alert(shop.Name, "Błąd", "OK");
+            UserDialogs.Instance.ShowLoading("Ładowanie...", MaskType.Black);
+            Shops.ToList().ForEach(x => x.Number = Shops.IndexOf(x) + 1);
+            UserDialogs.Instance.HideLoading();
         }
+
+        public void OpenShopAction(object sender)
+        {
+            try
+            {
+                Shop shop = (Shop)sender;
+
+                //UserDialogs.Instance.Alert(shop.Name, "Błąd", "OK");
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+
+        public async void AddShopAction()
+        {
+            try
+            {
+                Shop initialShop = new Shop();
+                Shop shop = await Navigation.ShowPopupAsync(new AddEditShopPopup(initialShop, "Nowy sklep"));
+
+                if (shop is null)
+                    return;
+
+                await App.Database.SaveShopAsync(shop);
+
+                Shops.Add(shop);
+                AssignNumbers();
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+        
+        public async void EditShopAction(object sender)
+        {
+            try
+            {
+                Shop initialShop = (Shop)sender;
+                Shop shop = await Navigation.ShowPopupAsync(new AddEditShopPopup(initialShop, "Edycja sklepu"));
+
+                if (shop is null)
+                    return;
+
+                await App.Database.UpdateShopAsync(shop);
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+        
+        public async void DeleteShopAction(object sender)
+        {
+            try
+            {
+                Shop shop = (Shop)sender;                
+
+                if (shop is null)
+                    return;
+
+                bool result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+                {
+                    Message = "Czy na pewno chcesz usunąć sklep " + shop.Name + "?",
+                    OkText = "Tak",
+                    CancelText = "Nie",
+                    Title = "Potwierdzenie",
+                    AndroidStyleId = 2131689474
+                });
+
+                if (!result)
+                    return;
+
+                await App.Database.DeleteShopAsync(shop);
+                Shops.Remove(shop);
+                AssignNumbers();
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+
+
     }
 }
