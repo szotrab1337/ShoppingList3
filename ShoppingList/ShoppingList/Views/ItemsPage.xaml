@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShoppingList.Views.ItemsPage"
+             Background="#121212"
+             Title="{Binding Title}"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Name="Items">
+
+    <AbsoluteLayout>
+
+        <StackLayout Margin="0,10,0,10"
+                     AbsoluteLayout.LayoutFlags="All"
+                     AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <CollectionView ItemsSource="{Binding Items}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.GestureRecognizers>
+                                <DropGestureRecognizer AllowDrop="True"
+                                                       DragOverCommand="{Binding Path=BindingContext.DragOverCommand, Source={x:Reference Items}}"
+                                                       DragOverCommandParameter="{Binding .}"
+                                                       DragLeaveCommand="{Binding Path=BindingContext.DragLeaveCommand, Source={x:Reference Items}}"
+                                                       DropCommand="{Binding Path=BindingContext.DropCommand, Source={x:Reference Items}}"
+                                                       DropCommandParameter="{Binding .}"/>
+                            </SwipeView.GestureRecognizers>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItemView>
+                                        <StackLayout Orientation="Horizontal"
+                                                     VerticalOptions="Fill"
+                                                     HorizontalOptions="Fill"
+                                                     Margin="0,5,5,5">
+                                            <Frame CornerRadius="10" 
+                                                   Padding="0">
+
+                                                <StackLayout Orientation="Horizontal"
+                                                             BackgroundColor="#f8ac94">
+                                                    <Image Source="missing.png"
+                                                           Margin="10,0,0,0"
+                                                           HeightRequest="20"
+                                                           WidthRequest="20">
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.AbsentItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
+                                                    <Label  Text="Brak"
+                                                            FontSize="15"
+                                                            TextColor="{StaticResource BackgroundPrimary}"
+                                                            VerticalTextAlignment="Center"
+                                                            HorizontalTextAlignment="Center"
+                                                            Margin="0,10,10,10">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.AbsentItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <StackLayout.GestureRecognizers>
+                                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.AbsentItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                    </StackLayout.GestureRecognizers>
+                                                </StackLayout>
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.AbsentItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                </Frame.GestureRecognizers>
+                                            </Frame>
+                                        </StackLayout>
+                                    </SwipeItemView>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItemView>
+                                        <StackLayout Orientation="Horizontal"
+                                                     VerticalOptions="Fill"
+                                                     HorizontalOptions="Fill"
+                                                     Margin="0,5,5,5">
+                                            <Frame CornerRadius="10" 
+                                                   Padding="0">
+
+                                                <StackLayout Orientation="Horizontal"
+                                                             BackgroundColor="#03DAC5">
+                                                    <Image Source="info.png"
+                                                           Margin="10,0,0,0"
+                                                           HeightRequest="20"
+                                                           WidthRequest="20">
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.OpenItemInfoCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
+                                                    <Label  Text="Szczegóły"
+                                                            FontSize="15"
+                                                            TextColor="{StaticResource BackgroundPrimary}"
+                                                            VerticalTextAlignment="Center"
+                                                            HorizontalTextAlignment="Center"
+                                                            Margin="0,10,10,10">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.ItemInfoCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <StackLayout.GestureRecognizers>
+                                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.ItemInfoCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                    </StackLayout.GestureRecognizers>
+                                                </StackLayout>
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.ItemInfoCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                </Frame.GestureRecognizers>
+                                            </Frame>
+                                            <Frame CornerRadius="10" 
+                                                   Padding="0">
+
+                                                <StackLayout Orientation="Horizontal"
+                                                             BackgroundColor="{StaticResource ColorPrimary}">
+                                                    <Image Source="edit.png"
+                                                           Margin="10,0,0,0"
+                                                           HeightRequest="20"
+                                                           WidthRequest="20">
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
+                                                    <Label  Text="Edytuj"
+                                                            FontSize="15"
+                                                            TextColor="{StaticResource BackgroundPrimary}"
+                                                            VerticalTextAlignment="Center"
+                                                            HorizontalTextAlignment="Center"
+                                                            Margin="0,10,10,10">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <StackLayout.GestureRecognizers>
+                                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                    </StackLayout.GestureRecognizers>
+                                                </StackLayout>
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                </Frame.GestureRecognizers>
+                                            </Frame>
+                                            <Frame CornerRadius="10"
+                                                   Padding="0">
+
+                                                <StackLayout Orientation="Horizontal"
+                                                             BackgroundColor="#CF6679">
+                                                    <Image Source="thrash.png"
+                                                           Margin="10,0,0,0"
+                                                           HeightRequest="20"
+                                                           WidthRequest="20">
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
+                                                    <Label  Text="Usuń"
+                                                            FontSize="15"
+                                                            VerticalTextAlignment="Center"
+                                                            HorizontalTextAlignment="Center"
+                                                            TextColor="{StaticResource BackgroundPrimary}"
+                                                            Margin="0,10,10,10" >
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <StackLayout.GestureRecognizers>
+                                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                    </StackLayout.GestureRecognizers>
+                                                </StackLayout>
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                              Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                </Frame.GestureRecognizers>
+                                            </Frame>
+                                        </StackLayout>
+                                    </SwipeItemView>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <ContentView Padding="5">
+
+                                <Frame Padding="0"
+                                       CornerRadius="10">
+                                    <Frame.Style>
+                                        <Style TargetType="Frame">
+                                            <Style.Triggers>
+                                                <DataTrigger TargetType="Frame" 
+                                                                 Binding="{Binding Absent}" 
+                                                                 Value="true">
+                                                    <Setter Property="BackgroundColor" 
+                                                                Value="{StaticResource TextDisabled}"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Frame" 
+                                                                 Binding="{Binding Absent}" 
+                                                                 Value="false">
+                                                    <Setter Property="BackgroundColor" 
+                                                                Value="{StaticResource BackgroundSecondary}"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Frame" 
+                                                                 Binding="{Binding IsBought}" 
+                                                                 Value="true">
+                                                    <Setter Property="BackgroundColor" 
+                                                                Value="{StaticResource BackgroundPrimary}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Frame.Style>
+
+                                    <StackLayout Orientation="Vertical">
+
+                                        <StackLayout Orientation="Horizontal"
+                                             Margin="10,10,10,10">
+
+                                            <CheckBox IsChecked="{Binding IsBought}"
+                                              HorizontalOptions="Center"
+                                           VerticalOptions="Center"/>
+
+                                            <StackLayout Orientation="Vertical" Margin="5,0,0,0">
+                                                <Label Text="{Binding Name}"
+                                                       FontSize="20"
+                                                       TextColor="{StaticResource TextPrimary}"
+                                                       TextDecorations="{Binding TextDecorations}">
+                                                    <Label.Style>
+                                                        <Style TargetType="Label">
+                                                            <Style.Triggers>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsBought}" 
+                                                                                Value="true">
+                                                                    <Setter Property="TextColor"
+                                                                            Value="{StaticResource TextDisabled}"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsBought}" 
+                                                                                Value="false">
+                                                                    <Setter Property="TextColor"
+                                                                            Value="{StaticResource TextPrimary}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Label.Style>
+                                                </Label>
+                                                <Label Text="{Binding Description}"
+                                                       FontSize="17"
+                                                       TextColor="{StaticResource TextSecondary}"
+                                                       TextDecorations="{Binding TextDecorations}">
+                                                    <Label.Style>
+                                                        <Style TargetType="Label">
+                                                            <Style.Triggers>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsBought}" 
+                                                                 Value="true">
+                                                                    <Setter Property="TextColor"
+                                                                            Value="{StaticResource TextDisabled}"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsBought}" 
+                                                                 Value="false">
+                                                                    <Setter Property="TextColor"
+                                                                            Value="{StaticResource TextSecondary}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Label.Style>
+                                                </Label>
+
+                                            </StackLayout>
+
+                                            <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="EndAndExpand">
+                                                <Label Text="{Binding Quantity}"
+                                                       FontSize="15"
+                                                       TextColor="{StaticResource TextSecondary}"
+                                                       TextDecorations="{Binding TextDecorations}">
+                                                    <Label.Style>
+                                                        <Style TargetType="Label">
+                                                            <Style.Triggers>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsBought}" 
+                                                                 Value="true">
+                                                                    <Setter Property="TextColor"
+                                                                            Value="{StaticResource TextDisabled}"/>
+
+                                                                </DataTrigger>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsBought}" 
+                                                                 Value="false">
+                                                                    <Setter Property="TextColor"
+                                                                            Value="{StaticResource TextSecondary}"/>
+
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Label.Style>
+                                                </Label>
+
+                                                <Label Text="{Binding Unit}"
+                                                       FontSize="15"
+                                                       TextColor="{StaticResource TextSecondary}"
+                                                       TextDecorations="{Binding TextDecorations}">
+                                                    <Label.Style>
+                                                        <Style TargetType="Label">
+                                                            <Style.Triggers>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsBought}" 
+                                                                 Value="true">
+                                                                    <Setter Property="TextColor"
+                                                                            Value="{StaticResource TextDisabled}"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsBought}" 
+                                                                 Value="false">
+                                                                    <Setter Property="TextColor"
+                                                                            Value="{StaticResource TextSecondary}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Label.Style>
+                                                </Label>
+                                            </StackLayout>
+
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
+                            </ContentView>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+
+        <ImageButton Source="plus.png"
+                     BackgroundColor="Transparent"
+                     AbsoluteLayout.LayoutFlags="PositionProportional"
+                     AbsoluteLayout.LayoutBounds=".95,.95,60,60"
+                     Command="{Binding AddItemCommand}"/>
+
+    </AbsoluteLayout>
+</ContentPage>

@@ -1,7 +1,10 @@
 ﻿using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.ObjectModel;
 
 namespace ShoppingList.Models
 {
@@ -17,26 +20,35 @@ namespace ShoppingList.Models
         }
         private string _Name;
 
-        public DateTime CreatedOn 
-        {
-            get { return _CreatedOn; }
-            set { _CreatedOn = value; OnPropertyChanged("CreatedOn"); }
-        }
-        private DateTime _CreatedOn;
-
-        public DateTime? ModifiedOn
-        {
-            get { return _ModifiedOn; }
-            set { _ModifiedOn = value; OnPropertyChanged("ModifiedOn"); }
-        }
-        private DateTime? _ModifiedOn;
-
-        [Ignore]
         public int? Number
         {
             get { return _Number; }
             set { _Number = value; OnPropertyChanged("Number"); }
         }
         private int? _Number;
+
+        [Ignore]
+        public int QuantityToBuy
+        {
+            get { return _QuantityToBuy; }
+            set { _QuantityToBuy = value; OnPropertyChanged("QuantityToBuy"); }
+        }
+        private int _QuantityToBuy;
+
+        [Ignore]
+        public bool IsBeingDragged
+        {
+            get { return isBeingDragged; }
+            set { isBeingDragged = value; OnPropertyChanged("IsBeingDragged"); }
+        }
+        private bool isBeingDragged;
+
+        [Ignore]
+        public bool IsBeingDraggedOver
+        {
+            get { return isBeingDraggedOver; }
+            set { isBeingDraggedOver = value; OnPropertyChanged("IsBeingDraggedOver"); }
+        }
+        private bool isBeingDraggedOver;
     }
 }

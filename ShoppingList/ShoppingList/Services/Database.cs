@@ -15,14 +15,15 @@ namespace ShoppingList.Services
         {
             _database = new SQLiteAsyncConnection(dbPath);
             _database.CreateTableAsync<Shop>().Wait();
+            _database.CreateTableAsync<Item>().Wait();
         }
 
         public Task<List<Shop>> GetShopsAsync()
         {
-            return _database.Table<Shop>().ToListAsync();
+            return _database.Table<Shop>().OrderBy(x => x.Number).ToListAsync();
         }
 
-        public Task SaveShopAsync(Shop shop)
+        public Task InsertShopAsync(Shop shop)
         {
             return _database.InsertAsync(shop);
         }
@@ -31,20 +32,37 @@ namespace ShoppingList.Services
         {
             return _database.UpdateAsync(shop);
         }
+        
+        public Task UpdateShopsAsync(List<Shop> shops)
+        {           
+            return _database.UpdateAllAsync(shops);
+        }
 
         public Task DeleteShopAsync(Shop shop)
         {
             return _database.DeleteAsync(shop);
         }
 
-        //public Task<List<Item>> GetItemsAsync()
-        //{
-        //    return _database.Table<Item>().ToListAsync();
-        //}
-        //public Task<List<Item>> GetItemsByShopAsync(int id)
-        //{
-        //    return _database.Table<Item>().Where(x => x.ShopID == id).ToListAsync();
-        //}
+        public Task<List<Item>> GetShopItemsAsync(int shopId)
+        {
+            return _database.Table<Item>().Where(x => x.ShopId == shopId).ToListAsync();
+        }
+
+        public Task InsertItemAsync(Item item)
+        {
+            return _database.InsertAsync(item);
+        }
+
+        public Task UpdateItemAsync(Item item)
+        {
+            return _database.UpdateAsync(item);
+        }
+        
+        public Task UpdateItemsAsync(List<Item> items)
+        {
+            return _database.UpdateAllAsync(items);
+        }
+
         //public Task<Item> GetItemAsync(Item item)
         //{
         //    return _database.Table<Item>().Where(x => x.ItemID == item.ItemID).FirstOrDefaultAsync();
@@ -64,10 +82,7 @@ namespace ShoppingList.Services
         //    return _database.Table<Shop>().Where(x => x.Name == Name).FirstOrDefaultAsync();
         //}
 
-        //public Task SaveItemAsync(Item item)
-        //{
-        //    return _database.InsertAsync(item);
-        //}
+
 
         //public Task UpdateItemAsync(Item item)
         //{
