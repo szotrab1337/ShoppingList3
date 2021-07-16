@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShoppingList.Views.AddEditItemPage"
+             Title="{Binding Title}"
+             Background="#121212"
+             x:Name="AddEditItem"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Orientation="Vertical"
+                         Margin="5,10,5,10">
+
+                <StackLayout Orientation="Vertical"
+                             Margin="20">
+                    <Label Text="Nazwa"
+                           FontSize="16"
+                           TextColor="{StaticResource TextPrimary}"/>
+                    <Entry FontSize="20"
+                           Placeholder="nazwa przedmiotu"
+                           PlaceholderColor="{StaticResource TextSecondary}"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{StaticResource TextPrimary}"/>
+                </StackLayout>
+
+                <StackLayout Orientation="Vertical"
+                             Margin="20,0,20,20"
+                             HorizontalOptions="FillAndExpand">
+                    <Label Text="Ilość"
+                           FontSize="16"
+                           TextColor="{StaticResource TextPrimary}"/>
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="FillAndExpand">
+                        <Entry FontSize="20"
+                               Placeholder="nazwa przedmiotu"
+                               PlaceholderColor="{StaticResource TextSecondary}"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{StaticResource TextPrimary}"
+                               HorizontalOptions="FillAndExpand"/>
+                        <Picker Title="Jednostka"
+                                TextColor="{StaticResource TextPrimary}"
+                                TitleColor="{StaticResource TextPrimary}"
+                                FontSize="20"
+                                BackgroundColor="{StaticResource BackgroundPrimary}"/>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout Orientation="Vertical"
+                             Margin="20,0,20,20">
+                    <Label Text="Opis"
+                           FontSize="16"
+                           TextColor="{StaticResource TextPrimary}"/>
+                    <Entry FontSize="20"
+                           Placeholder="opis przedmiotu"
+                           PlaceholderColor="{StaticResource TextSecondary}"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{StaticResource TextPrimary}"/>
+                </StackLayout>
+
+
+                <ImageButton Source="{Binding Path=BindingContext.Image, Source={x:Reference AddEditItem}}"
+                             HeightRequest="250"
+                             BackgroundColor="Transparent"
+                             Command="{Binding Path=BindingContext.SelectImageCommand, Source={x:Reference AddEditItem}}"
+                             xct:TouchEffect.LongPressCommand="{Binding Path=BindingContext.EnlargePhotoCommand, Source={x:Reference AddEditItem}}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

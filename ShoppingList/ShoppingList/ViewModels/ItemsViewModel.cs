@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using ShoppingList.Models;
+using ShoppingList.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
 
 namespace ShoppingList.ViewModels
@@ -87,16 +89,7 @@ namespace ShoppingList.ViewModels
         {
             try
             {
-                //Shop initialShop = new Shop();
-                //Shop shop = await Navigation.ShowPopupAsync(new AddEditShopPopup(initialShop, "Nowy sklep"));
-
-                //if (shop is null)
-                //    return;
-
-                //await App.Database.InsertShopAsync(shop);
-
-                //Shops.Add(shop);
-                //AssignNumbers();
+                await Navigation.PushAsync(new AddEditItemPage(true, null));
             }
             catch (Exception ex)
             {

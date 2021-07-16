@@ -85,8 +85,8 @@
                                                            WidthRequest="20">
                                                         <Image.GestureRecognizers>
                                                             <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
-                                                                              CommandParameter="{Binding .}"/>
+                                                                                  Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
+                                                                                  CommandParameter="{Binding .}"/>
                                                         </Image.GestureRecognizers>
                                                     </Image>
                                                     <Label  Text="Usuń"
@@ -97,8 +97,8 @@
                                                             Margin="0,10,10,10" >
                                                         <Label.GestureRecognizers>
                                                             <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
-                                                                              CommandParameter="{Binding .}"/>
+                                                                                  Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
+                                                                                  CommandParameter="{Binding .}"/>
                                                         </Label.GestureRecognizers>
                                                     </Label>
                                                     <StackLayout.GestureRecognizers>
@@ -109,8 +109,8 @@
                                                 </StackLayout>
                                                 <Frame.GestureRecognizers>
                                                     <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
-                                                                              CommandParameter="{Binding .}"/>
+                                                                          Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
+                                                                          CommandParameter="{Binding .}"/>
                                                 </Frame.GestureRecognizers>
                                             </Frame>
                                         </StackLayout>
