@@ -6,6 +6,13 @@
              Background="#121212"
              x:Name="AddEditItem"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Zapisz"
+                     Command="{Binding Path=BindingContext.SaveItemCommand, Source={x:Reference AddEditItem}}"
+                     IsEnabled="{Binding Path=BindingContext.SaveIsEnabled, Source={x:Reference AddEditItem}}"/>
+    </ContentPage.ToolbarItems>
+    
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Orientation="Vertical"
@@ -20,7 +27,8 @@
                            Placeholder="nazwa przedmiotu"
                            PlaceholderColor="{StaticResource TextSecondary}"
                            HorizontalTextAlignment="Center"
-                           TextColor="{StaticResource TextPrimary}"/>
+                           TextColor="{StaticResource TextPrimary}"
+                           Text="{Binding Path=BindingContext.Name, Source={x:Reference AddEditItem}, Mode=TwoWay}"/>
                 </StackLayout>
 
                 <StackLayout Orientation="Vertical"
@@ -32,16 +40,22 @@
                     <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="FillAndExpand">
                         <Entry FontSize="20"
-                               Placeholder="nazwa przedmiotu"
+                               Placeholder="ilość"
                                PlaceholderColor="{StaticResource TextSecondary}"
                                HorizontalTextAlignment="Center"
                                TextColor="{StaticResource TextPrimary}"
-                               HorizontalOptions="FillAndExpand"/>
+                               HorizontalOptions="FillAndExpand"
+                               Text="{Binding Path=BindingContext.Quantity, Source={x:Reference AddEditItem}}"/>
                         <Picker Title="Jednostka"
                                 TextColor="{StaticResource TextPrimary}"
                                 TitleColor="{StaticResource TextPrimary}"
                                 FontSize="20"
-                                BackgroundColor="{StaticResource BackgroundPrimary}"/>
+                                WidthRequest="150"
+                                HorizontalTextAlignment="Center"
+                                BackgroundColor="{StaticResource BackgroundPrimary}"
+                                ItemsSource="{Binding Path=BindingContext.Units, Source={x:Reference AddEditItem}}"
+                                ItemDisplayBinding="{Binding Name}"
+                                SelectedItem="{Binding Path=BindingContext.SelectedUnit, Source={x:Reference AddEditItem}}"/>
                     </StackLayout>
                 </StackLayout>
 
@@ -54,7 +68,8 @@
                            Placeholder="opis przedmiotu"
                            PlaceholderColor="{StaticResource TextSecondary}"
                            HorizontalTextAlignment="Center"
-                           TextColor="{StaticResource TextPrimary}"/>
+                           TextColor="{StaticResource TextPrimary}"
+                           Text="{Binding Path=BindingContext.Description, Source={x:Reference AddEditItem}}"/>
                 </StackLayout>
 
 

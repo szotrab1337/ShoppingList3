@@ -28,6 +28,7 @@ namespace ShoppingList.ViewModels
             AbsentItemCommand = new Command<Item>(AbsentItemAction);
 
             LoadItems();
+            MessagingCenter.Subscribe<AddEditItemViewModel>(this, "RefreshItemsList", (LoadAgain) => { LoadItems(); });
         }
 
         public ICommand OpenItemCommand { get; set; }
@@ -89,7 +90,7 @@ namespace ShoppingList.ViewModels
         {
             try
             {
-                await Navigation.PushAsync(new AddEditItemPage(true, null));
+                await Navigation.PushAsync(new AddEditItemPage(true, null, Shop));
             }
             catch (Exception ex)
             {

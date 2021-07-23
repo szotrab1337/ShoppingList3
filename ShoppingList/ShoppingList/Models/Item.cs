@@ -48,12 +48,12 @@ namespace ShoppingList.Models
         }
         private string _Image;
 
-        public string Unit
+        public int UnitId
         {
-            get { return _Unit; }
-            set { _Unit = value; OnPropertyChanged("Unit"); }
+            get { return _UnitId; }
+            set { _UnitId = value; OnPropertyChanged("UnitId"); }
         }
-        private string _Unit;
+        private int _UnitId;
 
         public bool Absent
         {

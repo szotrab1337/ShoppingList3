@@ -4,6 +4,7 @@
              x:Class="ShoppingList.Views.ItemsPage"
              Background="#121212"
              Title="{Binding Title}"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Name="Items">
 
@@ -240,11 +241,16 @@
                                               HorizontalOptions="Center"
                                            VerticalOptions="Center"/>
 
-                                            <StackLayout Orientation="Vertical" Margin="5,0,0,0">
+                                            <Grid  Margin="5,0,0,0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
                                                 <Label Text="{Binding Name}"
                                                        FontSize="20"
                                                        TextColor="{StaticResource TextPrimary}"
-                                                       TextDecorations="{Binding TextDecorations}">
+                                                       TextDecorations="{Binding TextDecorations}"
+                                                       Grid.Row="0">
                                                     <Label.Style>
                                                         <Style TargetType="Label">
                                                             <Style.Triggers>
@@ -267,7 +273,8 @@
                                                 <Label Text="{Binding Description}"
                                                        FontSize="17"
                                                        TextColor="{StaticResource TextSecondary}"
-                                                       TextDecorations="{Binding TextDecorations}">
+                                                       TextDecorations="{Binding TextDecorations}"
+                                                       Grid.Row="1">
                                                     <Label.Style>
                                                         <Style TargetType="Label">
                                                             <Style.Triggers>
@@ -283,12 +290,18 @@
                                                                     <Setter Property="TextColor"
                                                                             Value="{StaticResource TextSecondary}"/>
                                                                 </DataTrigger>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding Description}" 
+                                                                                Value="-1">
+                                                                    <Setter Property="IsVisible"
+                                                                            Value="False"/>
+                                                                </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
                                                     </Label.Style>
                                                 </Label>
 
-                                            </StackLayout>
+                                            </Grid>
 
                                             <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="EndAndExpand">
                                                 <Label Text="{Binding Quantity}"
