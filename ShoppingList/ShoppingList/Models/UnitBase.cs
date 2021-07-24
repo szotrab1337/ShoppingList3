@@ -1,29 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ShoppingList.Models
 {
     public static class UnitBase
     {
-        private static readonly Dictionary<int, string> Units = new Dictionary<int, string>()
+        private static readonly List<Unit> Units = new List<Unit>()
         {
-            { 0, "sztuki" },
-            { 1, "litry" },
-            { 2, "opakowania" },
-            { 3, "kilogramy" }
+            new Unit(){ UnitId = 0, Name = "sztuki", ShortName = "szt" },
+            new Unit(){ UnitId = 1, Name = "litry", ShortName = "l" },
+            new Unit(){ UnitId = 2, Name = "opakowania", ShortName = "op" },
+            new Unit(){ UnitId = 3, Name = "kilogramy", ShortName = "kg" }
         };
 
         public static List<Unit> GetUnits()
         {
-            List<Unit> units = new List<Unit>();
+            return Units;
+        }
 
-            foreach (var unit in Units)
-            {
-                units.Add(new Unit { UnitId = unit.Key, Name = unit.Value });
-            }
-
-            return units;
+        public static string GetUnit(int unitId)
+        {
+            return Units.FirstOrDefault(x => x.UnitId == unitId).ShortName;
         }
     }
 }

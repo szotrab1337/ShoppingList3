@@ -42,6 +42,11 @@ namespace ShoppingList.Services
         {
             return _database.DeleteAsync(shop);
         }
+        
+        public Task DeleteItemAsync(Item item)
+        {
+            return _database.DeleteAsync(item);
+        }
 
         public Task<List<Item>> GetShopItemsAsync(int shopId)
         {

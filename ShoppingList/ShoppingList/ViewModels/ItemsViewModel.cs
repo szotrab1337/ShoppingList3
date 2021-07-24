@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
@@ -21,21 +22,21 @@ namespace ShoppingList.ViewModels
             this.Shop = shop;
             this.Title = Shop.Name + " " + Shop.ShopId;
 
-            OpenItemCommand = new Command<Item>(OpenItemAction);
             AddItemCommand = new Command(AddItemAction);
             EditItemCommand = new Command<Item>(EditItemAction);
             DeleteItemCommand = new Command<Item>(DeleteItemAction);
             AbsentItemCommand = new Command<Item>(AbsentItemAction);
+            EnlargePhotoCommand = new Command<Item>(EnlargePhotoAction);
 
             LoadItems();
             MessagingCenter.Subscribe<AddEditItemViewModel>(this, "RefreshItemsList", (LoadAgain) => { LoadItems(); });
         }
 
-        public ICommand OpenItemCommand { get; set; }
         public ICommand AddItemCommand { get; set; }
         public ICommand EditItemCommand { get; set; }
         public ICommand DeleteItemCommand { get; set; }
         public ICommand AbsentItemCommand { get; set; }
+        public ICommand EnlargePhotoCommand { get; set; }
 
         public INavigation Navigation { get; set; }
         public Shop Shop { get; set; }
@@ -64,33 +65,11 @@ namespace ShoppingList.ViewModels
             }
         }
 
-        private async void AssignNumbers()
-        {
-            UserDialogs.Instance.ShowLoading("Numerowanie...", MaskType.Black);
-
-            Items.ToList().ForEach(x => x.Number = Items.IndexOf(x) + 1);
-            await App.Database.UpdateItemsAsync(Items.ToList());
-
-            UserDialogs.Instance.HideLoading();
-        }
-
-        private async void OpenItemAction(Item item)
-        {
-            try
-            {
-                //await Navigation.PushAsync(new ItemsPage(shop));
-            }
-            catch (Exception ex)
-            {
-                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
-            }
-        }
-
         private async void AddItemAction()
         {
             try
             {
-                await Navigation.PushAsync(new AddEditItemPage(true, null, Shop));
+                await Navigation.PushAsync(new AddEditItemPage(null, Shop));
             }
             catch (Exception ex)
             {
@@ -102,12 +81,10 @@ namespace ShoppingList.ViewModels
         {
             try
             {
-                //Shop shop = await Navigation.ShowPopupAsync(new AddEditShopPopup(initialShop, "Edycja sklepu"));
+                if (item is null)
+                    return;
 
-                //if (shop is null)
-                //    return;
-
-                //await App.Database.UpdateShopAsync(shop);
+                await Navigation.PushAsync(new AddEditItemPage(item, Shop));
             }
             catch (Exception ex)
             {
@@ -132,24 +109,23 @@ namespace ShoppingList.ViewModels
         {
             try
             {
-                //if (shop is null)
-                //    return;
+                if (item is null)
+                    return;
 
-                //bool result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
-                //{
-                //    Message = "Czy na pewno chcesz usunąć sklep " + shop.Name + "?",
-                //    OkText = "Tak",
-                //    CancelText = "Nie",
-                //    Title = "Potwierdzenie",
-                //    AndroidStyleId = 2131689474
-                //});
+                bool result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+                {
+                    Message = "Czy na pewno chcesz usunąć przedmiot " + item.Name + "?",
+                    OkText = "Tak",
+                    CancelText = "Nie",
+                    Title = "Potwierdzenie",
+                    AndroidStyleId = 2131689474
+                });
 
-                //if (!result)
-                //    return;
+                if (!result)
+                    return;
 
-                //await App.Database.DeleteShopAsync(shop);
-                //Shops.Remove(shop);
-                //AssignNumbers();
+                await App.Database.DeleteItemAsync(item);
+                Items.Remove(item);
             }
             catch (Exception ex)
             {
@@ -173,6 +149,21 @@ namespace ShoppingList.ViewModels
 
                     MessagingCenter.Send(this, "RefreshItemsCount");
                 }
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+
+        private void EnlargePhotoAction(Item item)
+        {
+            try
+            {
+                if (item is null || string.IsNullOrEmpty(item.Image))
+                    return;
+
+                Navigation.ShowPopup(new ImagePopup(item.Image));
             }
             catch (Exception ex)
             {

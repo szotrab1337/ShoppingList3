@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ShoppingList.Views.ItemsPage"
-             Background="#121212"
+             Background="#141414"
              Title="{Binding Title}"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
@@ -10,200 +10,128 @@
 
     <AbsoluteLayout>
 
-        <StackLayout Margin="0,10,0,10"
+        <Grid Margin="0,10,0,10"
                      AbsoluteLayout.LayoutFlags="All"
                      AbsoluteLayout.LayoutBounds="0,0,1,1">
+
+            <Label Text="Brak przedmiotów do kupienia!"
+                   FontSize="20"
+                   TextColor="#616161"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Items.Count}"
+                                         Value="0">
+                                <Setter Property="IsVisible"
+                                        Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
             <CollectionView ItemsSource="{Binding Items}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
-                            <SwipeView.GestureRecognizers>
+                            <!--<SwipeView.GestureRecognizers>
                                 <DropGestureRecognizer AllowDrop="True"
                                                        DragOverCommand="{Binding Path=BindingContext.DragOverCommand, Source={x:Reference Items}}"
                                                        DragOverCommandParameter="{Binding .}"
                                                        DragLeaveCommand="{Binding Path=BindingContext.DragLeaveCommand, Source={x:Reference Items}}"
                                                        DropCommand="{Binding Path=BindingContext.DropCommand, Source={x:Reference Items}}"
                                                        DropCommandParameter="{Binding .}"/>
-                            </SwipeView.GestureRecognizers>
+                            </SwipeView.GestureRecognizers>-->
                             <SwipeView.LeftItems>
                                 <SwipeItems>
-                                    <SwipeItemView>
-                                        <StackLayout Orientation="Horizontal"
-                                                     VerticalOptions="Fill"
-                                                     HorizontalOptions="Fill"
-                                                     Margin="0,5,5,5">
-                                            <Frame CornerRadius="10" 
-                                                   Padding="0">
 
-                                                <StackLayout Orientation="Horizontal"
-                                                             BackgroundColor="#f8ac94">
-                                                    <Image Source="missing.png"
-                                                           Margin="10,0,0,0"
-                                                           HeightRequest="20"
-                                                           WidthRequest="20">
-                                                        <Image.GestureRecognizers>
-                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.AbsentItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                        </Image.GestureRecognizers>
-                                                    </Image>
-                                                    <Label  Text="Brak"
-                                                            FontSize="15"
-                                                            TextColor="{StaticResource BackgroundPrimary}"
-                                                            VerticalTextAlignment="Center"
-                                                            HorizontalTextAlignment="Center"
-                                                            Margin="0,10,10,10">
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.AbsentItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
-                                                    <StackLayout.GestureRecognizers>
-                                                        <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.AbsentItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                    </StackLayout.GestureRecognizers>
-                                                </StackLayout>
-                                                <Frame.GestureRecognizers>
-                                                    <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.AbsentItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                </Frame.GestureRecognizers>
-                                            </Frame>
-                                        </StackLayout>
+                                    <SwipeItemView Command="{Binding Path=BindingContext.AbsentItemCommand, Source={x:Reference Items}}"
+                                                   CommandParameter="{Binding .}"
+                                                   BackgroundColor="{StaticResource BackgroundPrimary}"
+                                                   Margin="0,0,10,0">
+                                        <Frame Padding="0" 
+                                               Margin="2.5,5,2.5,5"
+                                               BackgroundColor="{StaticResource BackgroundPrimary}"
+                                               CornerRadius="10">
+                                            <StackLayout Orientation="Horizontal"
+                                                         BackgroundColor="#f8ac94">
+                                                <Image Source="missing.png"
+                                                       Margin="10,0,0,0"
+                                                       HeightRequest="20"
+                                                       WidthRequest="20"/>
+                                                <Label Text="Brak"
+                                                       FontSize="15"
+                                                       VerticalTextAlignment="Center"
+                                                       HorizontalTextAlignment="Center"
+                                                       TextColor="{StaticResource BackgroundPrimary}"
+                                                       Margin="0,10,0,10" />
+                                            </StackLayout>
+                                        </Frame>
                                     </SwipeItemView>
+                                    
                                 </SwipeItems>
                             </SwipeView.LeftItems>
                             <SwipeView.RightItems>
                                 <SwipeItems>
-                                    <SwipeItemView>
-                                        <StackLayout Orientation="Horizontal"
-                                                     VerticalOptions="Fill"
-                                                     HorizontalOptions="Fill"
-                                                     Margin="0,5,5,5">
-                                            <Frame CornerRadius="10" 
-                                                   Padding="0">
 
-                                                <StackLayout Orientation="Horizontal"
-                                                             BackgroundColor="#03DAC5">
-                                                    <Image Source="info.png"
-                                                           Margin="10,0,0,0"
-                                                           HeightRequest="20"
-                                                           WidthRequest="20">
-                                                        <Image.GestureRecognizers>
-                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.OpenItemInfoCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                        </Image.GestureRecognizers>
-                                                    </Image>
-                                                    <Label  Text="Szczegóły"
-                                                            FontSize="15"
-                                                            TextColor="{StaticResource BackgroundPrimary}"
-                                                            VerticalTextAlignment="Center"
-                                                            HorizontalTextAlignment="Center"
-                                                            Margin="0,10,10,10">
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.ItemInfoCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
-                                                    <StackLayout.GestureRecognizers>
-                                                        <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.ItemInfoCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                    </StackLayout.GestureRecognizers>
-                                                </StackLayout>
-                                                <Frame.GestureRecognizers>
-                                                    <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.ItemInfoCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                </Frame.GestureRecognizers>
-                                            </Frame>
-                                            <Frame CornerRadius="10" 
-                                                   Padding="0">
-
-                                                <StackLayout Orientation="Horizontal"
-                                                             BackgroundColor="{StaticResource ColorPrimary}">
-                                                    <Image Source="edit.png"
-                                                           Margin="10,0,0,0"
-                                                           HeightRequest="20"
-                                                           WidthRequest="20">
-                                                        <Image.GestureRecognizers>
-                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                        </Image.GestureRecognizers>
-                                                    </Image>
-                                                    <Label  Text="Edytuj"
-                                                            FontSize="15"
-                                                            TextColor="{StaticResource BackgroundPrimary}"
-                                                            VerticalTextAlignment="Center"
-                                                            HorizontalTextAlignment="Center"
-                                                            Margin="0,10,10,10">
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
-                                                    <StackLayout.GestureRecognizers>
-                                                        <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                    </StackLayout.GestureRecognizers>
-                                                </StackLayout>
-                                                <Frame.GestureRecognizers>
-                                                    <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                </Frame.GestureRecognizers>
-                                            </Frame>
-                                            <Frame CornerRadius="10"
-                                                   Padding="0">
-
-                                                <StackLayout Orientation="Horizontal"
-                                                             BackgroundColor="#CF6679">
-                                                    <Image Source="thrash.png"
-                                                           Margin="10,0,0,0"
-                                                           HeightRequest="20"
-                                                           WidthRequest="20">
-                                                        <Image.GestureRecognizers>
-                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                        </Image.GestureRecognizers>
-                                                    </Image>
-                                                    <Label  Text="Usuń"
-                                                            FontSize="15"
-                                                            VerticalTextAlignment="Center"
-                                                            HorizontalTextAlignment="Center"
-                                                            TextColor="{StaticResource BackgroundPrimary}"
-                                                            Margin="0,10,10,10" >
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
-                                                    <StackLayout.GestureRecognizers>
-                                                        <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                    </StackLayout.GestureRecognizers>
-                                                </StackLayout>
-                                                <Frame.GestureRecognizers>
-                                                    <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                              Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"/>
-                                                </Frame.GestureRecognizers>
-                                            </Frame>
-                                        </StackLayout>
+                                    <SwipeItemView Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference Items}}"
+                                                   CommandParameter="{Binding .}"
+                                                   BackgroundColor="{StaticResource BackgroundPrimary}"
+                                                   Margin="0,0,10,0">
+                                        <Frame Padding="0" 
+                                               Margin="2.5,5,2.5,5"
+                                               BackgroundColor="{StaticResource BackgroundPrimary}"
+                                               CornerRadius="10">
+                                            <StackLayout Orientation="Horizontal"
+                                                         BackgroundColor="#CF6679">
+                                                <Image Source="thrash.png"
+                                                       Margin="10,0,0,0"
+                                                       HeightRequest="20"
+                                                       WidthRequest="20"/>
+                                                <Label Text="Usuń"
+                                                       FontSize="15"
+                                                       VerticalTextAlignment="Center"
+                                                       HorizontalTextAlignment="Center"
+                                                       TextColor="{StaticResource BackgroundPrimary}"
+                                                       Margin="0,10,0,10" />
+                                            </StackLayout>
+                                        </Frame>
                                     </SwipeItemView>
+
+                                    <SwipeItemView Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference Items}}"
+                                                   CommandParameter="{Binding .}"
+                                                   BackgroundColor="{StaticResource BackgroundPrimary}"
+                                                   Margin="0,0,10,0">
+                                        <Frame  BackgroundColor="{StaticResource BackgroundPrimary}"
+                                                Padding="0"
+                                                CornerRadius="10"
+                                            Margin="2.5,5,2.5,5">
+                                            <StackLayout Orientation="Horizontal"
+                                                         BackgroundColor="{StaticResource ColorPrimary}">
+                                                <Image Source="edit.png"
+                                                       Margin="10,0,0,0"
+                                                       HeightRequest="20"
+                                                       WidthRequest="20"/>
+                                                <Label Text="Edytuj"
+                                                       FontSize="15"
+                                                       TextColor="{StaticResource BackgroundPrimary}"
+                                                       VerticalTextAlignment="Center"
+                                                       HorizontalTextAlignment="Center"
+                                                       Margin="0,10,0,10"/>
+                                            </StackLayout>
+                                        </Frame>
+                                    </SwipeItemView>
+
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <ContentView Padding="5">
+
+                            <ContentView Padding="5" 
+                                         Background="#141414">
 
                                 <Frame Padding="0"
                                        CornerRadius="10">
@@ -235,11 +163,11 @@
                                     <StackLayout Orientation="Vertical">
 
                                         <StackLayout Orientation="Horizontal"
-                                             Margin="10,10,10,10">
+                                                     Margin="10,10,10,10">
 
                                             <CheckBox IsChecked="{Binding IsBought}"
-                                              HorizontalOptions="Center"
-                                           VerticalOptions="Center"/>
+                                                      HorizontalOptions="Center"
+                                                      VerticalOptions="Center"/>
 
                                             <Grid  Margin="5,0,0,0">
                                                 <Grid.RowDefinitions>
@@ -256,13 +184,13 @@
                                                             <Style.Triggers>
                                                                 <DataTrigger TargetType="Label"
                                                                              Binding="{Binding IsBought}" 
-                                                                                Value="true">
+                                                                             Value="true">
                                                                     <Setter Property="TextColor"
                                                                             Value="{StaticResource TextDisabled}"/>
                                                                 </DataTrigger>
                                                                 <DataTrigger TargetType="Label"
                                                                              Binding="{Binding IsBought}" 
-                                                                                Value="false">
+                                                                             Value="false">
                                                                     <Setter Property="TextColor"
                                                                             Value="{StaticResource TextPrimary}"/>
                                                                 </DataTrigger>
@@ -280,19 +208,19 @@
                                                             <Style.Triggers>
                                                                 <DataTrigger TargetType="Label"
                                                                              Binding="{Binding IsBought}" 
-                                                                 Value="true">
+                                                                             Value="true">
                                                                     <Setter Property="TextColor"
                                                                             Value="{StaticResource TextDisabled}"/>
                                                                 </DataTrigger>
                                                                 <DataTrigger TargetType="Label"
                                                                              Binding="{Binding IsBought}" 
-                                                                 Value="false">
+                                                                             Value="false">
                                                                     <Setter Property="TextColor"
                                                                             Value="{StaticResource TextSecondary}"/>
                                                                 </DataTrigger>
                                                                 <DataTrigger TargetType="Label"
                                                                              Binding="{Binding Description}" 
-                                                                                Value="-1">
+                                                                             Value="-1">
                                                                     <Setter Property="IsVisible"
                                                                             Value="False"/>
                                                                 </DataTrigger>
@@ -303,24 +231,51 @@
 
                                             </Grid>
 
-                                            <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="EndAndExpand">
+                                            <StackLayout Orientation="Horizontal" 
+                                                         VerticalOptions="Center" 
+                                                         HorizontalOptions="EndAndExpand">
+                                                <Image Source="imagePlaceholder.png"
+                                                       HeightRequest="20"
+                                                       Margin="0,0,10,0"
+                                                       VerticalOptions="Center"
+                                                       Opacity="0.8"
+                                                       IsVisible="{Binding SmallImageVisibility}">
+                                                    <Image.Style>
+                                                        <Style TargetType="Image">
+                                                            <Style.Triggers>
+                                                                <DataTrigger TargetType="Image"
+                                                                             Binding="{Binding IsBought}" 
+                                                                             Value="true">
+                                                                    <Setter Property="Opacity"
+                                                                            Value="0.6"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Image.Style>
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.EnlargePhotoCommand, Source={x:Reference Items}}"
+                                                                              CommandParameter="{Binding .}"
+                                                                              NumberOfTapsRequired="1"/>
+                                                    </Image.GestureRecognizers>
+                                                </Image>
                                                 <Label Text="{Binding Quantity}"
                                                        FontSize="15"
                                                        TextColor="{StaticResource TextSecondary}"
-                                                       TextDecorations="{Binding TextDecorations}">
+                                                       TextDecorations="{Binding TextDecorations}"
+                                                       x:Name="Quantity">
                                                     <Label.Style>
                                                         <Style TargetType="Label">
                                                             <Style.Triggers>
                                                                 <DataTrigger TargetType="Label"
                                                                              Binding="{Binding IsBought}" 
-                                                                 Value="true">
+                                                                             Value="true">
                                                                     <Setter Property="TextColor"
                                                                             Value="{StaticResource TextDisabled}"/>
 
                                                                 </DataTrigger>
                                                                 <DataTrigger TargetType="Label"
                                                                              Binding="{Binding IsBought}" 
-                                                                 Value="false">
+                                                                             Value="false">
                                                                     <Setter Property="TextColor"
                                                                             Value="{StaticResource TextSecondary}"/>
 
@@ -339,13 +294,13 @@
                                                             <Style.Triggers>
                                                                 <DataTrigger TargetType="Label"
                                                                              Binding="{Binding IsBought}" 
-                                                                 Value="true">
+                                                                             Value="true">
                                                                     <Setter Property="TextColor"
                                                                             Value="{StaticResource TextDisabled}"/>
                                                                 </DataTrigger>
                                                                 <DataTrigger TargetType="Label"
                                                                              Binding="{Binding IsBought}" 
-                                                                 Value="false">
+                                                                             Value="false">
                                                                     <Setter Property="TextColor"
                                                                             Value="{StaticResource TextSecondary}"/>
                                                                 </DataTrigger>
@@ -363,7 +318,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </StackLayout>
+        </Grid>
 
         <ImageButton Source="plus.png"
                      BackgroundColor="Transparent"

@@ -48,12 +48,12 @@ namespace ShoppingList.Models
         }
         private string _Image;
 
-        public int UnitId
+        public int? UnitId
         {
             get { return _UnitId; }
             set { _UnitId = value; OnPropertyChanged("UnitId"); }
         }
-        private int _UnitId;
+        private int? _UnitId;
 
         public bool Absent
         {
@@ -62,13 +62,6 @@ namespace ShoppingList.Models
         }
         private bool _Absent;
 
-        public int? Number
-        {
-            get { return _Number; }
-            set { _Number = value; OnPropertyChanged("Number"); }
-        }
-        private int? _Number;
-
         [Ignore]
         public TextDecorations TextDecorations
         {
@@ -76,6 +69,12 @@ namespace ShoppingList.Models
             set { _TextDecorations = value; OnPropertyChanged("TextDecorations"); }
         }
         private TextDecorations _TextDecorations;
+
+        [Ignore]
+        public string Unit => UnitId is null ? string.Empty : UnitBase.GetUnit(UnitId.Value);
+
+        [Ignore]
+        public string SmallImageVisibility => string.IsNullOrEmpty(Image) ? "False" : "True";
 
     }
 }

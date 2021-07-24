@@ -75,6 +75,7 @@
 
                 <ImageButton Source="{Binding Path=BindingContext.Image, Source={x:Reference AddEditItem}}"
                              HeightRequest="250"
+                             Opacity="0.8"
                              BackgroundColor="Transparent"
                              Command="{Binding Path=BindingContext.SelectImageCommand, Source={x:Reference AddEditItem}}"
                              xct:TouchEffect.LongPressCommand="{Binding Path=BindingContext.EnlargePhotoCommand, Source={x:Reference AddEditItem}}"/>

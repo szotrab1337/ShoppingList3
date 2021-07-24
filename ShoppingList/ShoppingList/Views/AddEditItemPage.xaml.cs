@@ -15,10 +15,10 @@ namespace ShoppingList.Views
     public partial class AddEditItemPage : ContentPage
     {
         AddEditItemViewModel viewModel;
-        public AddEditItemPage(bool addMode, Item item, Shop shop)
+        public AddEditItemPage(Item item, Shop shop)
         {
             InitializeComponent();
-            this.BindingContext = viewModel = new AddEditItemViewModel(Navigation, addMode, item, shop);
+            this.BindingContext = viewModel = new AddEditItemViewModel(Navigation, item, shop);
         }
     }
 }
