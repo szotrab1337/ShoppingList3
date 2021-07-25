@@ -78,6 +78,7 @@ namespace ShoppingList.ViewModels
                 foreach (Shop shop in Shops)
                 {
                     shop.QuantityToBuy = (await App.Database.GetShopItemsAsync(shop.ShopId)).Where(x => !x.IsBought).Count();
+                    shop.QuantityAll = (await App.Database.GetShopItemsAsync(shop.ShopId)).Count();
                 }
             }
             catch (Exception ex)

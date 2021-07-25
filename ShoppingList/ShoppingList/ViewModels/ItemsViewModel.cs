@@ -20,13 +20,14 @@ namespace ShoppingList.ViewModels
         {
             this.Navigation = navigation;
             this.Shop = shop;
-            this.Title = Shop.Name + " " + Shop.ShopId;
+            this.Title = Shop.Name;
 
             AddItemCommand = new Command(AddItemAction);
             EditItemCommand = new Command<Item>(EditItemAction);
             DeleteItemCommand = new Command<Item>(DeleteItemAction);
             AbsentItemCommand = new Command<Item>(AbsentItemAction);
             EnlargePhotoCommand = new Command<Item>(EnlargePhotoAction);
+            CheckCommand = new Command<Item>(CheckAction);
 
             LoadItems();
             MessagingCenter.Subscribe<AddEditItemViewModel>(this, "RefreshItemsList", (LoadAgain) => { LoadItems(); });
@@ -37,6 +38,7 @@ namespace ShoppingList.ViewModels
         public ICommand DeleteItemCommand { get; set; }
         public ICommand AbsentItemCommand { get; set; }
         public ICommand EnlargePhotoCommand { get; set; }
+        public ICommand CheckCommand { get; set; }
 
         public INavigation Navigation { get; set; }
         public Shop Shop { get; set; }
@@ -164,6 +166,21 @@ namespace ShoppingList.ViewModels
                     return;
 
                 Navigation.ShowPopup(new ImagePopup(item.Image));
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+        
+        private void CheckAction(Item item)
+        {
+            try
+            {
+                if (item is null)
+                    return;
+
+                item.IsBought = !item.IsBought;
             }
             catch (Exception ex)
             {

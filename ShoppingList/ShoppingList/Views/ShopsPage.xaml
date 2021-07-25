@@ -80,7 +80,7 @@
                             </SwipeView.RightItems>
                             
                             <ContentView Padding="5"
-                                         Background="#141414">
+                                         Background="#121212">
                                 <StackLayout>
                                     <Line BackgroundColor="{StaticResource TextPrimary}" 
                                           IsVisible="{Binding IsBeingDraggedOver}" 
@@ -132,6 +132,18 @@
                                                                FontAttributes="Italic"/>
 
                                                         <Label Text="{Binding QuantityToBuy}"
+                                                               Margin="0,0,0,5"
+                                                               FontSize="13"
+                                                               TextColor="{StaticResource TextSecondary}"
+                                                               FontAttributes="Bold"/>
+                                                        
+                                                        <Label Text="z"
+                                                               Margin="0,0,0,5"
+                                                               FontSize="13"
+                                                               TextColor="{StaticResource TextSecondary}"
+                                                               FontAttributes="None"/>
+
+                                                        <Label Text="{Binding QuantityAll}"
                                                                Margin="0,0,0,5"
                                                                FontSize="13"
                                                                TextColor="{StaticResource TextSecondary}"

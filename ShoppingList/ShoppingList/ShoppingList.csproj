@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <AssemblyName>ShoppingList</AssemblyName>
+    <Authors>Bartosz Ogrodnik</Authors>
+    <Company>BO Apps</Company>
   </PropertyGroup>
 
   <ItemGroup>

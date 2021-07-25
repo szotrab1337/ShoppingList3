@@ -17,11 +17,12 @@ namespace ShoppingList.ViewModels
     {
         public AddEditItemViewModel(INavigation navigation, Item item, Shop shop)
         {
+            ImagePlaceholder = ImageSource.FromResource("ShoppingList.Images.imagePlaceholder.png");
             Navigation = navigation;
             Item = item;
             Shop = shop;
             Title = item is null ? "Nowy przedmiot" : "Edycja przedmiotu";
-            Image = item is null ? ImagePlaceholder : ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(item.Image)));
+            Image = ImagePlaceholder;
 
             SelectImageCommand = new Command(SelectImageAction);
             EnlargePhotoCommand = new Command(EnlargePhotoAction);
@@ -35,7 +36,8 @@ namespace ShoppingList.ViewModels
                 Name = item.Name;
                 Quantity = item.Quantity.ToString();
                 Description = item.Description == "-1" ? string.Empty : item.Description;
-                SelectedUnit = Units.FirstOrDefault(x => x.UnitId == item.UnitId);
+                SelectedUnit = Units.FirstOrDefault(x => x.UnitId == item.UnitId) is null ? Units.FirstOrDefault() : Units.FirstOrDefault(x => x.UnitId == item.UnitId);
+                Image = string.IsNullOrEmpty(item.Image) ? ImagePlaceholder : ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(item.Image)));
             }
         }
         public INavigation Navigation { get; set; }
@@ -43,7 +45,7 @@ namespace ShoppingList.ViewModels
         public ICommand EnlargePhotoCommand { get; set; }
         public ICommand SaveItemCommand { get; set; }
 
-        public ImageSource ImagePlaceholder = ImageSource.FromResource("ShoppingList.Images.imagePlaceholder.png");
+        public ImageSource ImagePlaceholder;
 
         public Item Item
         {
@@ -128,7 +130,12 @@ namespace ShoppingList.ViewModels
         {
             try
             {
-                string[] choices = new[] { "Wczytaj z urządzenia", "Zrób zdjęcie" };
+                string[] choices;
+
+                if(Image == ImagePlaceholder)
+                    choices = new[] { "Wczytaj z urządzenia", "Zrób zdjęcie" };
+                else
+                    choices = new[] { "Wczytaj z urządzenia", "Zrób zdjęcie", "Usuń" };
 
                 string result = await UserDialogs.Instance.ActionSheetAsync("Wybierz...", string.Empty, "Anuluj", CancellationToken.None, choices);
 
@@ -140,6 +147,9 @@ namespace ShoppingList.ViewModels
 
                 if (result.Equals("Zrób zdjęcie"))
                     MakeImage();
+
+                if (result.Equals("Usuń"))
+                    ClearImage();
             }
             catch (Exception ex)
             {
@@ -147,6 +157,19 @@ namespace ShoppingList.ViewModels
             }
         }
 
+        private void ClearImage()
+        {
+            try
+            {
+                Image = ImagePlaceholder;
+                Image64 = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+        
         private void LoadUnits()
         {
             try
@@ -258,6 +281,7 @@ namespace ShoppingList.ViewModels
                     return;
 
                 Item.Name = Name;
+                Item.Image = Image64;
 
                 if (!string.IsNullOrWhiteSpace(Description))
                     Item.Description = Description;
@@ -269,9 +293,6 @@ namespace ShoppingList.ViewModels
                     Item.Quantity = Convert.ToDouble(Quantity);
                     Item.UnitId = SelectedUnit.UnitId;
                 }
-
-                if (!string.IsNullOrWhiteSpace(Image64))
-                    Item.Image = Image64;
 
                 await App.Database.UpdateItemAsync(Item);
                 MessagingCenter.Send(this, "RefreshItemsList");

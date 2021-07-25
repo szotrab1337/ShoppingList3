@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ShoppingList.Views.ItemsPage"
-             Background="#141414"
+             Background="#121212"
              Title="{Binding Title}"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
@@ -48,9 +48,9 @@
                                                        DropCommandParameter="{Binding .}"/>
                             </SwipeView.GestureRecognizers>-->
                             <SwipeView.LeftItems>
-                                <SwipeItems>
+                                <SwipeItems Mode="Execute">
 
-                                    <SwipeItemView Command="{Binding Path=BindingContext.AbsentItemCommand, Source={x:Reference Items}}"
+                                    <SwipeItemView Command="{Binding Path=BindingContext.CheckCommand, Source={x:Reference Items}}"
                                                    CommandParameter="{Binding .}"
                                                    BackgroundColor="{StaticResource BackgroundPrimary}"
                                                    Margin="0,0,10,0">
@@ -59,17 +59,32 @@
                                                BackgroundColor="{StaticResource BackgroundPrimary}"
                                                CornerRadius="10">
                                             <StackLayout Orientation="Horizontal"
-                                                         BackgroundColor="#f8ac94">
-                                                <Image Source="missing.png"
+                                                         BackgroundColor="{StaticResource ColorPrimary}">
+                                                <Image Source="check.png"
                                                        Margin="10,0,0,0"
                                                        HeightRequest="20"
                                                        WidthRequest="20"/>
-                                                <Label Text="Brak"
-                                                       FontSize="15"
+                                                <Label FontSize="15"
                                                        VerticalTextAlignment="Center"
-                                                       HorizontalTextAlignment="Center"
+                                                       VerticalOptions="CenterAndExpand"
+                                                       HorizontalTextAlignment="Start"
                                                        TextColor="{StaticResource BackgroundPrimary}"
-                                                       Margin="0,10,0,10" />
+                                                       Margin="0,10,5,10">
+                                                    <Label.Style>
+                                                        <Style TargetType="Label">
+                                                            <Setter Property="Text"
+                                                                    Value="Zaznacz"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsBought}"
+                                                                             Value="True">
+                                                                    <Setter Property="Text"
+                                                                            Value="Odznacz"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Label.Style>
+                                                </Label>
                                             </StackLayout>
                                         </Frame>
                                     </SwipeItemView>
@@ -94,6 +109,30 @@
                                                        HeightRequest="20"
                                                        WidthRequest="20"/>
                                                 <Label Text="Usuń"
+                                                       FontSize="15"
+                                                       VerticalTextAlignment="Center"
+                                                       HorizontalTextAlignment="Center"
+                                                       TextColor="{StaticResource BackgroundPrimary}"
+                                                       Margin="0,10,0,10" />
+                                            </StackLayout>
+                                        </Frame>
+                                    </SwipeItemView>
+
+                                    <SwipeItemView Command="{Binding Path=BindingContext.AbsentItemCommand, Source={x:Reference Items}}"
+                                                   CommandParameter="{Binding .}"
+                                                   BackgroundColor="{StaticResource BackgroundPrimary}"
+                                                   Margin="0,0,10,0">
+                                        <Frame Padding="0" 
+                                               Margin="2.5,5,2.5,5"
+                                               BackgroundColor="{StaticResource BackgroundPrimary}"
+                                               CornerRadius="10">
+                                            <StackLayout Orientation="Horizontal"
+                                                         BackgroundColor="#f8ac94">
+                                                <Image Source="missing.png"
+                                                       Margin="10,0,0,0"
+                                                       HeightRequest="20"
+                                                       WidthRequest="20"/>
+                                                <Label Text="Brak"
                                                        FontSize="15"
                                                        VerticalTextAlignment="Center"
                                                        HorizontalTextAlignment="Center"
@@ -131,7 +170,7 @@
                             </SwipeView.RightItems>
 
                             <ContentView Padding="5" 
-                                         Background="#141414">
+                                         Background="#121212">
 
                                 <Frame Padding="0"
                                        CornerRadius="10">
@@ -139,22 +178,24 @@
                                         <Style TargetType="Frame">
                                             <Style.Triggers>
                                                 <DataTrigger TargetType="Frame" 
-                                                                 Binding="{Binding Absent}" 
-                                                                 Value="true">
+                                                             Binding="{Binding Absent}" 
+                                                             Value="true">
                                                     <Setter Property="BackgroundColor" 
-                                                                Value="{StaticResource TextDisabled}"/>
+                                                            Value="{StaticResource TextDisabled}"/>
                                                 </DataTrigger>
                                                 <DataTrigger TargetType="Frame" 
-                                                                 Binding="{Binding Absent}" 
-                                                                 Value="false">
+                                                             Binding="{Binding Absent}" 
+                                                             Value="false">
                                                     <Setter Property="BackgroundColor" 
-                                                                Value="{StaticResource BackgroundSecondary}"/>
+                                                            Value="{StaticResource BackgroundSecondary}"/>
                                                 </DataTrigger>
                                                 <DataTrigger TargetType="Frame" 
-                                                                 Binding="{Binding IsBought}" 
-                                                                 Value="true">
+                                                             Binding="{Binding IsBought}" 
+                                                             Value="true">
                                                     <Setter Property="BackgroundColor" 
-                                                                Value="{StaticResource BackgroundPrimary}"/>
+                                                            Value="{StaticResource BackgroundPrimary}"/>
+                                                    <Setter Property="BorderColor"
+                                                            Value="Transparent"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -167,9 +208,11 @@
 
                                             <CheckBox IsChecked="{Binding IsBought}"
                                                       HorizontalOptions="Center"
-                                                      VerticalOptions="Center"/>
+                                                      VerticalOptions="Center"
+                                                      HeightRequest="35"
+                                                      WidthRequest="40"/>
 
-                                            <Grid  Margin="5,0,0,0">
+                                            <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
@@ -178,7 +221,8 @@
                                                        FontSize="20"
                                                        TextColor="{StaticResource TextPrimary}"
                                                        TextDecorations="{Binding TextDecorations}"
-                                                       Grid.Row="0">
+                                                       Grid.Row="0"
+                                                       VerticalOptions="CenterAndExpand">
                                                     <Label.Style>
                                                         <Style TargetType="Label">
                                                             <Style.Triggers>
@@ -193,6 +237,12 @@
                                                                              Value="false">
                                                                     <Setter Property="TextColor"
                                                                             Value="{StaticResource TextPrimary}"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding Description}" 
+                                                                             Value="-1">
+                                                                    <Setter Property="Margin"
+                                                                            Value="0,2,0,0"/>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
@@ -234,16 +284,21 @@
                                             <StackLayout Orientation="Horizontal" 
                                                          VerticalOptions="Center" 
                                                          HorizontalOptions="EndAndExpand">
-                                                <Image Source="imagePlaceholder.png"
-                                                       HeightRequest="20"
-                                                       Margin="0,0,10,0"
-                                                       VerticalOptions="Center"
-                                                       Opacity="0.8"
-                                                       IsVisible="{Binding SmallImageVisibility}">
-                                                    <Image.Style>
-                                                        <Style TargetType="Image">
+                                                <ImageButton Source="imagePlaceholder.png"
+                                                             HeightRequest="30"
+                                                             WidthRequest="35"
+                                                             Margin="0,0,10,0"
+                                                             VerticalOptions="Center"
+                                                             Opacity="0.8"
+                                                             IsVisible="{Binding SmallImageVisibility}"
+                                                             Command="{Binding Path=BindingContext.EnlargePhotoCommand, Source={x:Reference Items}}"
+                                                             CommandParameter="{Binding .}"
+                                                             BackgroundColor="Transparent"
+                                                             Padding="10,5,0,5">
+                                                    <ImageButton.Style>
+                                                        <Style TargetType="ImageButton">
                                                             <Style.Triggers>
-                                                                <DataTrigger TargetType="Image"
+                                                                <DataTrigger TargetType="ImageButton"
                                                                              Binding="{Binding IsBought}" 
                                                                              Value="true">
                                                                     <Setter Property="Opacity"
@@ -251,18 +306,14 @@
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
-                                                    </Image.Style>
-                                                    <Image.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.EnlargePhotoCommand, Source={x:Reference Items}}"
-                                                                              CommandParameter="{Binding .}"
-                                                                              NumberOfTapsRequired="1"/>
-                                                    </Image.GestureRecognizers>
-                                                </Image>
+                                                    </ImageButton.Style>
+                                                </ImageButton>
                                                 <Label Text="{Binding Quantity}"
                                                        FontSize="15"
                                                        TextColor="{StaticResource TextSecondary}"
                                                        TextDecorations="{Binding TextDecorations}"
-                                                       x:Name="Quantity">
+                                                       x:Name="Quantity"
+                                                       VerticalOptions="Center">
                                                     <Label.Style>
                                                         <Style TargetType="Label">
                                                             <Style.Triggers>
@@ -288,7 +339,8 @@
                                                 <Label Text="{Binding Unit}"
                                                        FontSize="15"
                                                        TextColor="{StaticResource TextSecondary}"
-                                                       TextDecorations="{Binding TextDecorations}">
+                                                       TextDecorations="{Binding TextDecorations}"
+                                                       VerticalOptions="Center">
                                                     <Label.Style>
                                                         <Style TargetType="Label">
                                                             <Style.Triggers>

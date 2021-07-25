@@ -34,6 +34,14 @@ namespace ShoppingList.Models
             set { _QuantityToBuy = value; OnPropertyChanged("QuantityToBuy"); }
         }
         private int _QuantityToBuy;
+        
+        [Ignore]
+        public int QuantityAll
+        {
+            get { return _QuantityAll; }
+            set { _QuantityAll = value; OnPropertyChanged("QuantityAll"); }
+        }
+        private int _QuantityAll;
 
         [Ignore]
         public bool IsBeingDragged
