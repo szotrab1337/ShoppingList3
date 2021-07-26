@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
@@ -19,7 +18,7 @@ namespace ShoppingList.ViewModels
             this.Navigation = navigation;
 
             Title = "Lista sklepów";
-            
+
             OpenShopCommand = new Command<Shop>(OpenShopAction);
             AddShopCommand = new Command(AddShopAction);
             EditShopCommand = new Command<Shop>(EditShopAction);
@@ -49,7 +48,7 @@ namespace ShoppingList.ViewModels
 
         public ObservableCollection<Shop> Shops
         {
-            get { return _Shops; }
+            get => _Shops;
             set { _Shops = value; OnPropertyChanged("Shops"); }
         }
         private ObservableCollection<Shop> _Shops;
@@ -153,11 +152,11 @@ namespace ShoppingList.ViewModels
                 UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
             }
         }
-        
+
         private async void DeleteShopAction(Shop shop)
         {
             try
-            {               
+            {
                 if (shop is null)
                     return;
 
@@ -172,6 +171,11 @@ namespace ShoppingList.ViewModels
 
                 if (!result)
                     return;
+
+                List<Item> items = new List<Item>(await App.Database.GetShopItemsAsync(shop.ShopId));
+
+                if (items != null && items.Count > 0)
+                    await App.Database.DeleteItemsAsync(items);
 
                 await App.Database.DeleteShopAsync(shop);
                 Shops.Remove(shop);

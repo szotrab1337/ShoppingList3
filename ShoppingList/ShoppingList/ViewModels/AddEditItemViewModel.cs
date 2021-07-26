@@ -31,7 +31,7 @@ namespace ShoppingList.ViewModels
             LoadUnits();
             SelectedUnit = Units.FirstOrDefault();
 
-            if(item != null)
+            if (item != null)
             {
                 Name = item.Name;
                 Quantity = item.Quantity.ToString();
@@ -49,42 +49,42 @@ namespace ShoppingList.ViewModels
 
         public Item Item
         {
-            get { return _Item; }
+            get => _Item;
             set { _Item = value; OnPropertyChanged("Item"); }
         }
         private Item _Item;
 
         public Shop Shop
         {
-            get { return _Shop; }
+            get => _Shop;
             set { _Shop = value; OnPropertyChanged("Shop"); }
         }
         private Shop _Shop;
 
         public Unit SelectedUnit
         {
-            get { return _SelectedUnit; }
+            get => _SelectedUnit;
             set { _SelectedUnit = value; OnPropertyChanged("SelectedUnit"); }
         }
         private Unit _SelectedUnit;
 
         public List<Unit> Units
         {
-            get { return _Units; }
+            get => _Units;
             set { _Units = value; OnPropertyChanged("Units"); }
         }
         private List<Unit> _Units;
 
         public ImageSource Image
         {
-            get { return _Image; }
+            get => _Image;
             set { _Image = value; OnPropertyChanged("Image"); }
         }
         private ImageSource _Image;
 
         public string ImagePath
         {
-            get { return _ImagePath; }
+            get => _ImagePath;
             set
             {
                 _ImagePath = value; OnPropertyChanged("ImagePath");
@@ -100,28 +100,28 @@ namespace ShoppingList.ViewModels
 
         public string Name
         {
-            get { return _Name; }
+            get => _Name;
             set { _Name = value; OnPropertyChanged("Name"); }
         }
         private string _Name;
 
         public string Description
         {
-            get { return _Description; }
+            get => _Description;
             set { _Description = value; OnPropertyChanged("Description"); }
         }
         private string _Description;
 
         public string Image64
         {
-            get { return _Image64; }
+            get => _Image64;
             set { _Image64 = value; OnPropertyChanged("Image64"); }
         }
         private string _Image64;
 
         public string Quantity
         {
-            get { return _Quantity; }
+            get => _Quantity;
             set { _Quantity = value; OnPropertyChanged("Quantity"); }
         }
         private string _Quantity;
@@ -132,7 +132,7 @@ namespace ShoppingList.ViewModels
             {
                 string[] choices;
 
-                if(Image == ImagePlaceholder)
+                if (Image == ImagePlaceholder)
                     choices = new[] { "Wczytaj z urządzenia", "Zrób zdjęcie" };
                 else
                     choices = new[] { "Wczytaj z urządzenia", "Zrób zdjęcie", "Usuń" };
@@ -169,7 +169,7 @@ namespace ShoppingList.ViewModels
                 UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
             }
         }
-        
+
         private void LoadUnits()
         {
             try
@@ -256,7 +256,7 @@ namespace ShoppingList.ViewModels
 
                 if (!string.IsNullOrWhiteSpace(Quantity))
                 {
-                    item.Quantity = Convert.ToDouble(Quantity);
+                    item.Quantity = Convert.ToDouble(Quantity.Replace('.', ','));
                     item.UnitId = SelectedUnit.UnitId;
                 }
 
@@ -272,7 +272,7 @@ namespace ShoppingList.ViewModels
                 UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
             }
         }
-        
+
         private async void EditItem()
         {
             try
@@ -290,7 +290,7 @@ namespace ShoppingList.ViewModels
 
                 if (!string.IsNullOrWhiteSpace(Quantity))
                 {
-                    Item.Quantity = Convert.ToDouble(Quantity);
+                    Item.Quantity = Convert.ToDouble(Quantity.Replace('.', ','));
                     Item.UnitId = SelectedUnit.UnitId;
                 }
 
@@ -329,8 +329,8 @@ namespace ShoppingList.ViewModels
                     return false;
                 }
 
-                if (!string.IsNullOrWhiteSpace(Quantity))
-                    if (!double.TryParse(Quantity, out double duantityParsed))
+                if (!string.IsNullOrWhiteSpace(Quantity.Replace('.', ',')))
+                    if (!double.TryParse(Quantity.Replace('.', ','), out double duantityParsed))
                     {
                         UserDialogs.Instance.Alert("Ilość musi być liczbą.", "Błąd", "OK");
                         return false;

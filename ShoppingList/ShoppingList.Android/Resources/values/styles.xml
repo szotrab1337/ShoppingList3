@@ -16,6 +16,8 @@
     <!--<item name="colorAccent">#FF4081</item>-->
 	  <item name="colorAccent">#BB86FC</item>
 	  <item name="colorControlActivated">#BB86FC</item>
+	  <item name="android:itemBackground">#333333</item>
+	  <item name="android:textColor">#dedede</item>
   </style>
 	
 	<style name="MyTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
@@ -24,6 +26,7 @@
 		<item name="android:windowFullscreen">true</item>
 		<item name="android:windowContentOverlay">@null</item>
 		<item name="android:windowActionBar">true</item>
+		<item name="android:actionMenuTextColor">#dedede</item>	
 	</style>
 
 	<style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">

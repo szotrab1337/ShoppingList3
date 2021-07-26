@@ -1,8 +1,6 @@
 ﻿using ShoppingList.Models;
 using SQLite;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ShoppingList.Services
@@ -32,9 +30,9 @@ namespace ShoppingList.Services
         {
             return _database.UpdateAsync(shop);
         }
-        
+
         public Task UpdateShopsAsync(List<Shop> shops)
-        {           
+        {
             return _database.UpdateAllAsync(shops);
         }
 
@@ -42,10 +40,19 @@ namespace ShoppingList.Services
         {
             return _database.DeleteAsync(shop);
         }
-        
+
         public Task DeleteItemAsync(Item item)
         {
             return _database.DeleteAsync(item);
+        }
+
+        public Task DeleteItemsAsync(List<Item> items)
+        {
+            foreach (Item item in items)
+            {
+                _database.DeleteAsync(item);
+            }
+            return null;
         }
 
         public Task<List<Item>> GetShopItemsAsync(int shopId)
@@ -62,7 +69,7 @@ namespace ShoppingList.Services
         {
             return _database.UpdateAsync(item);
         }
-        
+
         public Task UpdateItemsAsync(List<Item> items)
         {
             return _database.UpdateAllAsync(items);

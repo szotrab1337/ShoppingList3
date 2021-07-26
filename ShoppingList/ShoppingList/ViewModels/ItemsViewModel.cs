@@ -2,12 +2,9 @@
 using ShoppingList.Models;
 using ShoppingList.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
@@ -28,6 +25,14 @@ namespace ShoppingList.ViewModels
             AbsentItemCommand = new Command<Item>(AbsentItemAction);
             EnlargePhotoCommand = new Command<Item>(EnlargePhotoAction);
             CheckCommand = new Command<Item>(CheckAction);
+            DeleteBoughtCommand = new Command(DeleteBoughtAction);
+            DeleteAllCommand = new Command(DeleteAllAction);
+            RefreshCommand = new Command(() =>
+            {
+                IsRefreshing = true;
+                LoadItems();
+                IsRefreshing = false;
+            });
 
             LoadItems();
             MessagingCenter.Subscribe<AddEditItemViewModel>(this, "RefreshItemsList", (LoadAgain) => { LoadItems(); });
@@ -39,16 +44,26 @@ namespace ShoppingList.ViewModels
         public ICommand AbsentItemCommand { get; set; }
         public ICommand EnlargePhotoCommand { get; set; }
         public ICommand CheckCommand { get; set; }
+        public ICommand DeleteBoughtCommand { get; set; }
+        public ICommand DeleteAllCommand { get; set; }
+        public ICommand RefreshCommand { get; set; }
 
         public INavigation Navigation { get; set; }
         public Shop Shop { get; set; }
 
         public ObservableCollection<Item> Items
         {
-            get { return _Items; }
+            get => _Items;
             set { _Items = value; OnPropertyChanged("Items"); }
         }
         private ObservableCollection<Item> _Items;
+
+        public bool IsRefreshing
+        {
+            get => _IsRefreshing;
+            set { _IsRefreshing = value; OnPropertyChanged("IsRefreshing"); }
+        }
+        private bool _IsRefreshing;
 
         private async void LoadItems()
         {
@@ -58,6 +73,7 @@ namespace ShoppingList.ViewModels
 
                 Items = new ObservableCollection<Item>(await App.Database.GetShopItemsAsync(Shop.ShopId));
                 Items.ToList().ForEach(x => x.PropertyChanged += ItemPropertyChanged);
+                MessagingCenter.Send(this, "RefreshItemsCount");
 
                 UserDialogs.Instance.HideLoading();
             }
@@ -93,7 +109,7 @@ namespace ShoppingList.ViewModels
                 UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
             }
         }
-        
+
         private async void AbsentItemAction(Item item)
         {
             try
@@ -105,7 +121,7 @@ namespace ShoppingList.ViewModels
             {
                 UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
             }
-        }      
+        }
 
         private async void DeleteItemAction(Item item)
         {
@@ -172,7 +188,7 @@ namespace ShoppingList.ViewModels
                 UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
             }
         }
-        
+
         private void CheckAction(Item item)
         {
             try
@@ -186,6 +202,80 @@ namespace ShoppingList.ViewModels
             {
                 UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
             }
+        }
+
+        private async void DeleteBoughtAction()
+        {
+            try
+            {
+                if (Items is null || Items.Where(x => x.IsBought).Count() == 0)
+                    return;
+
+                bool result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+                {
+                    Message = $"Czy na pewno chcesz usunąć wszystkie kupione przedmioty? " +
+                    $"({Items.Where(x => x.IsBought).Count()} {QuantityToString(Items.Where(x => x.IsBought).Count())})",
+                    OkText = "Tak",
+                    CancelText = "Nie",
+                    Title = "Potwierdzenie",
+                    AndroidStyleId = 2131689474
+                });
+
+                if (!result)
+                    return;
+
+                foreach (Item item in Items.Where(x => x.IsBought).ToList())
+                {
+                    await App.Database.DeleteItemAsync(item);
+                    Items.Remove(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+
+        private async void DeleteAllAction()
+        {
+            try
+            {
+                if (Items is null || Items.Count == 0)
+                    return;
+
+                bool result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+                {
+                    Message = $"Czy na pewno chcesz usunąć wszystkie przedmioty? ({Items.Count()} {QuantityToString(Items.Count())})",
+                    OkText = "Tak",
+                    CancelText = "Nie",
+                    Title = "Potwierdzenie",
+                    AndroidStyleId = 2131689474
+                });
+
+                if (!result)
+                    return;
+
+                foreach (Item item in Items.ToList())
+                {
+                    await App.Database.DeleteItemAsync(item);
+                    Items.Remove(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+
+        private string QuantityToString(int quantity)
+        {
+            if (quantity == 1)
+                return "element";
+
+            if (quantity >= 2 && quantity <= 4)
+                return "elementy";
+
+            return "elementów";
         }
     }
 }
