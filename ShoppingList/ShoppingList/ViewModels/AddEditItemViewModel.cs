@@ -293,6 +293,11 @@ namespace ShoppingList.ViewModels
                     Item.Quantity = Convert.ToDouble(Quantity.Replace('.', ','));
                     Item.UnitId = SelectedUnit.UnitId;
                 }
+                else
+                {
+                    Item.Quantity = null;
+                    Item.UnitId = null;
+                }
 
                 await App.Database.UpdateItemAsync(Item);
                 MessagingCenter.Send(this, "RefreshItemsList");
@@ -329,7 +334,7 @@ namespace ShoppingList.ViewModels
                     return false;
                 }
 
-                if (!string.IsNullOrWhiteSpace(Quantity.Replace('.', ',')))
+                if (!string.IsNullOrWhiteSpace(Quantity))
                     if (!double.TryParse(Quantity.Replace('.', ','), out double duantityParsed))
                     {
                         UserDialogs.Instance.Alert("Ilość musi być liczbą.", "Błąd", "OK");
