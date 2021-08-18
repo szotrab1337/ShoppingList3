@@ -1,0 +1,56 @@
+﻿@using ShoppingListWeb.Models
+@model Shop
+
+<div id="no-more-tables">
+    <table class="table table-responsive-lg table-condensed cf" id="ModelList">
+        <thead class="table-dark cf">
+            <tr>
+                <th class="text-center align-middle" scope="col">#</th>
+                <th class="align-middle" scope="col">Nazwa</th>
+                <th class="align-middle text-center" scope="col">Ilość</th>
+                <th class="align-middle text-center" scope="col">Opis</th>
+                <th class="align-middle text-center" scope="col">Modyfikowano</th>
+                <th class="align-middle text-center" scope="col">ID</th>
+                <th class="align-middle text-center" scope="col">Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ int Number = 0; }
+            @foreach (Item item in Model.Items)
+            {
+                Number++;
+                <tr>
+                    <th data-title="#" class="align-middle text-center" scope="row">@Number</th>
+                    <td data-title="Nazwa" class="align-middle">@item.Name</td>
+                    <td data-title="Ilość" class="align-middle" id="textCenter">@item.QuantityFormatted</td>
+                    <td data-title="Opis" class="align-middle" id="textCenter">@item.DescriptionFormatted </td>
+                    <td data-title="Modyfikowano" class="align-middle" id="textCenter">@item.LastModified</td>
+                    <td data-title="ID" class="align-middle" id="textCenter">@item.ItemId</td>
+                    <td data-title="Akcje" class="align-middle" id="textCenter">
+                        <a class="btn btn-primary" id="btnEdit" href="@Url.Action("EditShoppingList", new { id = item.ItemId })"><i class="fas fa-edit"></i> Edytuj</a>
+                        <a class="btn btn-danger" href="@Url.Action("DeleteItem", new { itemId = item.ItemId, shopId = Model.ShopId })"><i class="fas fa-trash-alt"></i> Usuń</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<link rel="stylesheet" href="~/Content/DataTables/css/jquery.dataTables.css" />
+<link rel="stylesheet" href="~/Content/Site.css" />
+<script rel="JavaScript" type="text/javascript" src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+
+
+<script type="text/javascript">
+    jQuery(function ($) {
+        $(document).ready(function () {
+            $('#ModelList').DataTable({
+                "language": {
+                    "url": "/Scripts/DataTables/Polish.json"
+                },
+                'aaSorting': []
+            });
+        });
+    });
+</script>
+

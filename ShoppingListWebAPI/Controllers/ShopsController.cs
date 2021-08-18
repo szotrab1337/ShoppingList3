@@ -57,6 +57,8 @@ namespace ShoppingListWebAPI.Controllers
         {
             using (Context context = new Context())
             {
+                shop.CreatedOn = DateTime.Now;
+
                 context.Shops.AddOrUpdate(shop);
                 context.SaveChanges();
             }

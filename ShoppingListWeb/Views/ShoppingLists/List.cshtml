@@ -1,0 +1,144 @@
+﻿@using ShoppingListWeb.Models
+@model List<Shop>
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@if (ViewBag.Success != null)
+{
+    <div class="col-sm-12">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <span class="badge rounded-pill bg-success">Powodzenie!</span>
+            @ViewBag.Success
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" />
+        </div>
+    </div>
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="col-sm-12">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span class="badge rounded-pill bg-danger">Błąd danych!</span>
+            @ViewBag.Error
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" />
+        </div>
+    </div>
+}
+
+<div class="card">
+    <div class="card-header" style="display: table; width: 100%;">
+        <div class="d-flex justify-content-between">
+            <a href="@Url.Action("Index", new { controller = "Home" })" class="btn btn-secondary"><i class="fas fa-chevron-left"></i> Wstecz</a>
+            <a href="@Url.Action("EditShoppingList")" class="btn btn-success rounded"><i class="fa fa-plus-circle"></i> Dodaj listę zakupów</a>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-auto mr-auto">
+
+                <h3>
+                    Listy zakupów
+                </h3>
+            </div>
+        </div>
+
+        <br />
+        <div id="no-more-tables">
+            <table class="table table-responsive-lg table-condensed cf" id="ModelList">
+                <thead class="table-dark cf">
+                    <tr>
+                        <th class="text-center align-middle" scope="col">#</th>
+                        <th class="align-middle" scope="col">Nazwa</th>
+                        <th class="align-middle text-center" scope="col">Ilość przedmiotów</th>
+                        <th class="align-middle text-center" scope="col">Modyfikowano</th>
+                        <th class="align-middle text-center" scope="col">ID</th>
+                        <th class="align-middle text-center" scope="col">Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int Number = 0; }
+                    @foreach (Shop shop in Model)
+                    {
+                        Number++;
+                        <tr class="btnDelete" data-id="@shop.ShopId">
+                            <th data-title="#" class="align-middle text-center" scope="row">@Number</th>
+                            <td data-title="Nazwa" id="Name" class="align-middle">@shop.Name</td>
+                            <td data-title="Ilość przedmiotów" class="align-middle" id="textCenter">@shop.Items.Count</td>
+                            <td data-title="Modyfikowano" class="align-middle" id="textCenter">@shop.LastModified </td>
+                            <td data-title="Id" class="align-middle" id="textCenter">@shop.ShopId</td>
+                            <td data-title="Akcje" class="align-middle" id="textCenter">
+                                <a class="btn btn-primary" id="btnModify" href="@Url.Action("EditShoppingList", new { id = shop.ShopId })"><i class="fas fa-edit"></i> Modyfikuj</a>
+                                <button class="btn btn-danger btnDelete"><i class="fas fa-trash-alt"></i> Usuń</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Potwierdzenie</h5>
+                <button type="button" id="hideModal" class="btn-close" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modalText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="hideModal_" class="btn btn-secondary">Anuluj</button>
+                <button type="button" id="deleteShop" class="btn btn-danger">Usuń</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/Content/DataTables/css/jquery.dataTables.css" />
+<link rel="stylesheet" href="~/Content/Site.css" />
+<script rel="JavaScript" type="text/javascript" src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+        $(document).ready(function () {
+            $('#ModelList').DataTable({
+                "language": {
+                    "url": "/Scripts/DataTables/Polish.json"
+                },
+                'aaSorting': []
+            });
+        });
+
+        $('button.btnDelete').on('click', function (e) {
+            e.preventDefault();
+
+            var $row = jQuery(this).closest('tr');
+            var $columns = $row.find('td');
+            var test = $columns[0].innerHTML;
+
+            document.getElementById("modalText").innerHTML = 'Czy na pewno chcesz usunąć sklep <b>' + test + '</b>? Usunięte zostaną również' +
+                ' przedmioty do niego przypisane';
+
+            var id = $(this).closest('tr').data('id');
+            $('#myModal').data('id', id).modal('show');
+        });
+
+        $('#hideModal').on('click', function (e) {
+            $('#myModal').modal('hide');
+        });
+
+        $('#hideModal_').on('click', function (e) {
+            $('#myModal').modal('hide');
+        });
+
+        $('#deleteShop').on('click', function (e) {
+            var shopId = $('#myModal').data('id');
+
+            var url = '@Url.Action("DeleteShoppingList", new { id = "_id" })';
+            url = url.replace("_id", shopId);
+            window.location = url;
+        });
+    });
+</script>

@@ -125,14 +125,16 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ShopsController.cs" />
+    <Compile Include="Controllers\ShoppingListsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Context.cs" />
+    <Compile Include="Models\FileLogger.cs" />
     <Compile Include="Models\GenericContext.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Shop.cs" />
+    <Compile Include="Models\TextUtilities.cs" />
     <Compile Include="Models\Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -464,9 +466,8 @@
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.6.0.min.map" />
-    <None Include="Views\Shared\_Footer.cshtml" />
-    <None Include="Views\Shared\_Navbar.cshtml" />
-    <None Include="Views\Shared\_Sidebar.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -481,7 +482,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shops\List.cshtml" />
+    <Content Include="Views\ShoppingLists\List.cshtml" />
     <Content Include="webfonts\fa-brands-400.svg" />
     <Content Include="webfonts\fa-regular-400.svg" />
     <Content Include="webfonts\fa-solid-900.svg" />
@@ -497,6 +498,8 @@
     <Content Include="webfonts\fa-brands-400.woff" />
     <Content Include="webfonts\fa-brands-400.ttf" />
     <Content Include="webfonts\fa-brands-400.eot" />
+    <Content Include="Views\ShoppingLists\EditShoppingList.cshtml" />
+    <Content Include="Views\ShoppingLists\GroceryList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

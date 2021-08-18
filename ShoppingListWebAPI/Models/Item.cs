@@ -12,10 +12,9 @@ namespace ShoppingListWebAPI.Models
         public int ShopId { get; set; }
         public string Name { get; set; }
         public double? Quantity { get; set; }
-        public bool IsBought { get; set; }
         public string Description { get; set; }
-        public string Image { get; set; }
         public int? UnitId { get; set; }
-        public bool Absent { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

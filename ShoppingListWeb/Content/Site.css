@@ -51,11 +51,17 @@ body {
     padding: 0 15px;
 }
 
-/*@media screen and (max-width: 800px) {
-    responsiveActions{
-        padding: 10px;
+@media only screen and (max-width: 489px) {
+    #btnModify {
+        margin-bottom: 5px;
     }
-}*/
+}
+
+@media only screen and (max-width: 431px) {
+    #btnEdit {
+        margin-bottom: 5px;
+    }
+}
 
 
 @media only screen and (max-width: 1200px) {
@@ -79,9 +85,9 @@ body {
     #no-more-tables tr {
         border: 1px solid #ccc;
     }
-    
+
     #textCenter {
-        text-align:left;
+        text-align: left;
     }
 
     #no-more-tables th {
