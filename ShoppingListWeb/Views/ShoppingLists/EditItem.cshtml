@@ -1,0 +1,90 @@
+﻿@using ShoppingListWeb.Models
+@model Item
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@if (ViewBag.Error != null)
+{
+    <div class="col-sm-12">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span class="badge rounded-pill bg-danger">Błąd danych</span>
+            @ViewBag.Error
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" />
+        </div>
+    </div>
+}
+
+<form id="Form" method="post">
+    <div class="card">
+        <div class="card-header" style="display: table; width: 100%;">
+            <a href="@Url.Action("EditShoppingList", new { id = Model.ShopId })" class="btn btn-secondary rounded" style="float: left;">&lsaquo; Wstecz</a>
+        </div>
+        <div class="card-body">
+            <h3>
+                @if (Model.ItemId == 0)
+                {<text>Nowy przedmiot</text>}
+            else
+            {<text>Edycja przedmiotu</text>}
+            </h3><br />
+            <input id="disabled-input" name="ItemId" value="@Model.ItemId" class="form-control" type="hidden">
+            <input id="disabled-input" name="ShopId" value="@Model.ShopId" class="form-control" type="hidden">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="Name" class="form-label">Nazwa</label>
+                    <input type="text" name="Name" class="form-control" id="Name" placeholder="nazwa przedmiotu" value="@Model.Name">
+                </div>
+                <div class="col-md-6">
+                    <label for="Description" class="form-label">Opis</label>
+                    <input type="text" name="Description" class="form-control" id="Description" placeholder="opis przedmiotu" value="@Model.Description">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="Quantity" class="form-label">Ilość</label>
+                    <input type="text" name="Quantity" class="form-control" id="Quantity" placeholder="ilość np. 3" value="@Model.Quantity">
+                </div>
+                <div class="col-md-6">
+                    <label for="UnitId" class="form-label">Jednostka</label>
+                    <select name="UnitId" id="UnitId" class="form-control form-select">
+                        @foreach (Unit unit in Model.AvailableUnits)
+                        {
+                            <option value="@unit.UnitId" @if (Model.UnitId == unit.UnitId) { <text> selected</text> }>
+                                @unit.Name
+                        </option>
+                    }
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-success rounded" style="float:right;">
+                <i class="fas fa-check"></i> Zapisz
+            </button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+
+        $(document).ready(function () {
+            Validate();
+        });
+
+        $('#Quantity').keyup(function () {
+            Validate();
+        });
+
+        function Validate() {
+            var quantityValue = $('#Quantity').val();
+
+            if (quantityValue == null || quantityValue == '' || quantityValue <= 0) {
+                $('#UnitId').prop('disabled', true);
+            }
+            else {
+                $('#UnitId').prop('disabled', false);
+            }
+        }
+    });
+</script>

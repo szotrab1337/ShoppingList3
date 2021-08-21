@@ -500,6 +500,7 @@
     <Content Include="webfonts\fa-brands-400.eot" />
     <Content Include="Views\ShoppingLists\EditShoppingList.cshtml" />
     <Content Include="Views\ShoppingLists\GroceryList.cshtml" />
+    <Content Include="Views\ShoppingLists\EditItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

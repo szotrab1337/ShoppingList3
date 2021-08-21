@@ -15,7 +15,7 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    margin-bottom:15px;
 }
 
 /* Sticky footer styles
@@ -23,6 +23,10 @@ textarea {
 html {
     position: relative;
     min-height: 100%;
+}
+
+#ModelList {
+    margin-bottom: 10px;
 }
 
 body {
@@ -57,7 +61,7 @@ body {
     }
 }
 
-@media only screen and (max-width: 431px) {
+@media only screen and (max-width: 439px) {
     #btnEdit {
         margin-bottom: 5px;
     }
@@ -125,3 +129,8 @@ body {
             content: attr(data-title);
         }
 }
+
+#shopName {
+    display: inline;
+}
+

@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -92,7 +94,7 @@ namespace ShoppingListWeb.Controllers
                 if (shop.ShopId == 0)
                 {
                     shop.CreatedOn = DateTime.Now;
-                    Context.Shops.Add(shop);
+                    Context.Shops.AddOrUpdate(shop);
 
                     ViewBag.Success = "Pomyślnie dodano nowy sklep.";
                 }
@@ -110,7 +112,7 @@ namespace ShoppingListWeb.Controllers
                 }
                 Context.SaveChanges();
 
-                return RedirectToActionPermanent("List", new { success = ViewBag.Success });
+                return RedirectToActionPermanent("EditShoppingList", new {id = shop.ShopId, success = ViewBag.Success });
             }
             catch (Exception ex)
             {
@@ -140,6 +142,7 @@ namespace ShoppingListWeb.Controllers
                     return RedirectToAction("List", new { error = ViewBag.Error });
                 }
 
+                shop.ModifiedOn = DateTime.Now;
                 Context.Items.Remove(item);
                 Context.SaveChanges();
 
@@ -181,6 +184,106 @@ namespace ShoppingListWeb.Controllers
                 ViewBag.Success = "Pomyślnie usunięto sklep.";
 
                 return RedirectToAction("List", new { success = ViewBag.Success });
+            }
+            catch (Exception ex)
+            {
+                FileLogger.LogMessage("Error: " + ex.ToString(), 3);
+                return View("~/Views/Shared/Error.cshtml");
+            }
+        }
+
+        public ActionResult EditItem(int? itemId, int? shopId)
+        {
+            try
+            {
+                if (itemId is null && shopId is null)
+                {
+                    ViewBag.Error = "Wystąpił błąd.";
+                    return RedirectToAction("List", new { error = ViewBag.Error });
+                }
+
+                Item item = new Item();
+                Shop shop = new Shop();
+
+                if (itemId == null && shopId != null)
+                {
+                    shop.ShopId = 0;
+                    item.ShopId = shopId.Value;
+                    return View(item);
+                }
+
+                Context = new Context();
+
+                item = Context.Items.FirstOrDefault(x => x.ItemId == itemId);
+                shop = Context.Shops.FirstOrDefault(x => x.ShopId == shopId);
+
+                if (item is null || shop is null)
+                {
+                    ViewBag.Error = "Brak " + (item is null ? "przedmiotu" : "listy") + " w bazie danych.";
+                    return RedirectToAction("List", new { error = ViewBag.Error });
+                }
+
+                return View(item);
+            }
+            catch (Exception ex)
+            {
+                FileLogger.LogMessage("Error: " + ex.ToString(), 3);
+                return View("~/Views/Shared/Error.cshtml");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditItem(Item item)
+        {
+            try
+            {
+                if (item is null)
+                {
+                    ViewBag.Error = "Wystąpił błąd.";
+                    return RedirectToActionPermanent("List", new { error = ViewBag.Error });
+                }
+
+                Context = new Context();
+
+                if(item.ValidateItem() != string.Empty)
+                {
+                    ViewBag.Error = item.ValidateItem();
+                    return View("EditItem", item);
+                }
+
+                if (item.ItemId == 0)
+                {
+                    item.CreatedOn = DateTime.Now;
+
+                    if (item.Quantity == null)
+                        item.UnitId = null;
+
+                    Context.Items.AddOrUpdate(item);
+
+                    ViewBag.Success = "Pomyślnie dodano nowy przedmiot.";
+                }
+
+                else
+                {
+                    Item editedItem = Context.Items.FirstOrDefault(x => x.ItemId == item.ItemId);
+
+                    editedItem.ModifiedOn = DateTime.Now;
+                    editedItem.Name = item.Name;
+                    editedItem.Description = item.Description;
+                    editedItem.Quantity = item.Quantity;
+                    editedItem.UnitId = item.UnitId;
+
+                    if (editedItem.Quantity == null)
+                        editedItem.UnitId = null;
+
+                    ViewBag.Success = "Edycja zakończona powodzeniem.";
+                }
+                Shop shop = Context.Shops.FirstOrDefault(x => x.ShopId == item.ShopId);
+                shop.ModifiedOn = DateTime.Now;
+
+                Context.SaveChanges();
+
+                return RedirectToActionPermanent("EditShoppingList", new { id = item.ShopId, success = ViewBag.Success });
             }
             catch (Exception ex)
             {

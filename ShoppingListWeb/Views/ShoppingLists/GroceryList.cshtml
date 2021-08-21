@@ -16,7 +16,7 @@
         </thead>
         <tbody>
             @{ int Number = 0; }
-            @foreach (Item item in Model.Items)
+            @foreach (Item item in Model.Items.OrderBy(x => x.Name))
             {
                 Number++;
                 <tr>
@@ -27,7 +27,7 @@
                     <td data-title="Modyfikowano" class="align-middle" id="textCenter">@item.LastModified</td>
                     <td data-title="ID" class="align-middle" id="textCenter">@item.ItemId</td>
                     <td data-title="Akcje" class="align-middle" id="textCenter">
-                        <a class="btn btn-primary" id="btnEdit" href="@Url.Action("EditShoppingList", new { id = item.ItemId })"><i class="fas fa-edit"></i> Edytuj</a>
+                        <a class="btn btn-primary" id="btnEdit" href="@Url.Action("EditItem", new { itemId = item.ItemId, shopId = Model.ShopId })"><i class="fas fa-edit"></i> Edytuj</a>
                         <a class="btn btn-danger" href="@Url.Action("DeleteItem", new { itemId = item.ItemId, shopId = Model.ShopId })"><i class="fas fa-trash-alt"></i> Usuń</a>
                     </td>
                 </tr>
@@ -39,7 +39,6 @@
 <link rel="stylesheet" href="~/Content/DataTables/css/jquery.dataTables.css" />
 <link rel="stylesheet" href="~/Content/Site.css" />
 <script rel="JavaScript" type="text/javascript" src="~/Scripts/DataTables/jquery.dataTables.js"></script>
-
 
 <script type="text/javascript">
     jQuery(function ($) {

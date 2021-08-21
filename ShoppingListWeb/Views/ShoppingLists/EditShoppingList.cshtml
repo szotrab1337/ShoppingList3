@@ -28,46 +28,93 @@
     <div class="card">
         <div class="card-header" style="display: table; width: 100%;">
             <a href="@Url.Action("List")" class="btn btn-secondary rounded" style="float: left;"><i class="fas fa-chevron-left"></i> Wstecz</a>
-            <button type="submit" class="btn btn-success rounded" style="float:right;">
+            <button type="submit" class="btn btn-success rounded editShoppingListName" style="float:right;">
                 <i class="fas fa-check"></i> Zapisz
             </button>
         </div>
         <div class="card-body">
-            <h3>
-                @if (Model.ShopId == 0)
-                {<text>Nowy sklep</text>}
-            else
-            {<text>Edycja sklepu</text>}
-            </h3><br />
-            <input id="disabled-input" name="ShopId" value="@Model.ShopId" class="form-control" type="hidden">
-            <div class="row form-group">
-                <div class="col-lg-2"><label for="Name" class="form-control-label" style="margin-bottom:3px;">Nazwa sklepu:</label></div>
-                <div class="col-lg-9">
-                    <div class="input-group">
-                        <input id="Name" name="Name" class="form-control" type="text"
-                               value="@Model.Name" placeholder="nazwa sklepu">
+            <div>
+                <h3 id="shopName">
+                    @if (Model.ShopId == 0)
+                    {
+                        <text>Nowy sklep</text>
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrWhiteSpace(Model.Name))
+                        {
+                            <text>@Model.Name</text>
+                        }
+                        else
+                        {
+                            <text>Edycja sklepu</text>
+                        }
+                    }
+                </h3>
+                @if (Model.ShopId != 0)
+                {
+                    <a id="editShoppingListNameButton" style="display:inline; cursor:pointer;" class="link-primary">Edytuj</a>
+                    <a id="closeEditShoppingListNameButton" style="display:inline; cursor:pointer;" class="link-primary">Ukryj</a>
+                }
+            </div>
+            <input id="disabled-input" name="ShopId" value="@Model.ShopId" class="form-control" type="hidden" />
+            <div class="editShoppingListName">
+                <br />
+                <div class="row form-group">
+                    <div class="col-12">
+                        <label for="Name" class="form-label">Nazwa</label>
+                        <input type="text" name="Name" class="form-control" id="Name" placeholder="nazwa sklepu" value="@Model.Name">
                     </div>
                 </div>
             </div>
-
             @if (Model.ShopId > 0)
             {
-            <hr />
-            <div class="d-flex justify-content-between" style="margin-bottom:15px;">
-                <div class="flex-column">
-                    <h5 >Lista artykułów</h5>
+                <hr />
+                <div class="d-flex justify-content-between" style="margin-bottom:15px;">
+                    <div class="flex-column">
+                        <h5>Lista artykułów</h5>
+                    </div>
+                    <div class=" ms-auto" style="margin-left:auto; margin-right:0;">
+                        <a href="@Url.Action("EditItem", new { shopId = Model.ShopId })" class="btn btn-primary rounded"><i class="fas fa-plus-circle"></i> Dodaj</a>
+                    </div>
                 </div>
-                <div class=" ms-auto" style="margin-left:auto; margin-right:0;">
-                    <button type="submit" class="btn btn-success rounded">
-                        <i class="fas fa-plus-circle"></i> Dodaj
-                    </button>
-                </div>
-            </div>
-            @Html.Partial("GroceryList", Model)
+                @Html.Partial("GroceryList", Model)
             }
         </div>
     </div>
 </form>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+
+        $(document).ready(function () {
+            var shopId = $("#disabled-input").val();
+            var shopName = @Html.Raw(Json.Encode(Model.Name));
+
+            if (shopId > 0 && shopName != '') {
+                $(".editShoppingListName").hide();
+                $("#closeEditShoppingListNameButton").hide();
+            }
+
+            if (shopId > 0 && shopName == '') {
+                $("#editShoppingListNameButton").hide();
+            }
+        });
+
+        $("#editShoppingListNameButton").click(function () {
+            $(".editShoppingListName").show("fast");
+            $("#closeEditShoppingListNameButton").show();
+            $("#editShoppingListNameButton").hide();
+        });
+
+        $("#closeEditShoppingListNameButton").click(function () {
+            $(".editShoppingListName").hide("fast");
+            $("#closeEditShoppingListNameButton").hide();
+            $("#editShoppingListNameButton").show();
+        });
+
+    });
+</script>
 
 
 
