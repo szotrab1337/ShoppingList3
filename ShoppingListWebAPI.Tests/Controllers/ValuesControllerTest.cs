@@ -13,69 +13,69 @@ namespace ShoppingListWebAPI.Tests.Controllers
     [TestClass]
     public class ValuesControllerTest
     {
-        [TestMethod]
-        public void Get()
-        {
-            // Przygotowanie
-            ValuesController controller = new ValuesController();
+        //[TestMethod]
+        //public void Get()
+        //{
+        //    // Przygotowanie
+        //    ValuesController controller = new ValuesController();
 
-            // Wykonanie
-            IEnumerable<string> result = controller.Get();
+        //    // Wykonanie
+        //    IEnumerable<string> result = controller.Get();
 
-            // Sprawdzenie
-            Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count());
-            Assert.AreEqual("value1", result.ElementAt(0));
-            Assert.AreEqual("value2", result.ElementAt(1));
-        }
+        //    // Sprawdzenie
+        //    Assert.IsNotNull(result);
+        //    Assert.AreEqual(2, result.Count());
+        //    Assert.AreEqual("value1", result.ElementAt(0));
+        //    Assert.AreEqual("value2", result.ElementAt(1));
+        //}
 
-        [TestMethod]
-        public void GetById()
-        {
-            // Przygotowanie
-            ValuesController controller = new ValuesController();
+        //[TestMethod]
+        //public void GetById()
+        //{
+        //    // Przygotowanie
+        //    ValuesController controller = new ValuesController();
 
-            // Wykonanie
-            string result = controller.Get(5);
+        //    // Wykonanie
+        //    string result = controller.Get(5);
 
-            // Sprawdzenie
-            Assert.AreEqual("value", result);
-        }
+        //    // Sprawdzenie
+        //    Assert.AreEqual("value", result);
+        //}
 
-        [TestMethod]
-        public void Post()
-        {
-            // Przygotowanie
-            ValuesController controller = new ValuesController();
+        //[TestMethod]
+        //public void Post()
+        //{
+        //    // Przygotowanie
+        //    ValuesController controller = new ValuesController();
 
-            // Wykonanie
-            controller.Post("value");
+        //    // Wykonanie
+        //    controller.Post("value");
 
-            // Sprawdzenie
-        }
+        //    // Sprawdzenie
+        //}
 
-        [TestMethod]
-        public void Put()
-        {
-            // Przygotowanie
-            ValuesController controller = new ValuesController();
+        //[TestMethod]
+        //public void Put()
+        //{
+        //    // Przygotowanie
+        //    ValuesController controller = new ValuesController();
 
-            // Wykonanie
-            controller.Put(5, "value");
+        //    // Wykonanie
+        //    controller.Put(5, "value");
 
-            // Sprawdzenie
-        }
+        //    // Sprawdzenie
+        //}
 
-        [TestMethod]
-        public void Delete()
-        {
-            // Przygotowanie
-            ValuesController controller = new ValuesController();
+        //[TestMethod]
+        //public void Delete()
+        //{
+        //    // Przygotowanie
+        //    ValuesController controller = new ValuesController();
 
-            // Wykonanie
-            controller.Delete(5);
+        //    // Wykonanie
+        //    controller.Delete(5);
 
-            // Sprawdzenie
-        }
+        //    // Sprawdzenie
+        //}
     }
 }

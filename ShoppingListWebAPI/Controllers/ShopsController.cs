@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
@@ -13,7 +14,7 @@ namespace ShoppingListWebAPI.Controllers
     {
         // GET api/shops
         [HttpGet]
-        public string Get()
+        public HttpResponseMessage Get()
         {
             var settings = new JsonSerializerSettings()
             {
@@ -28,12 +29,15 @@ namespace ShoppingListWebAPI.Controllers
             Context context = new Context();
             List<Shop> shops = context.Shops.ToList();
 
-            return JsonConvert.SerializeObject(shops, settings);
+            return new HttpResponseMessage()
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(shops, settings), System.Text.Encoding.UTF8, "application/json")
+            };
         }
 
         // GET api/shops/5
         [HttpGet]
-        public string Get(int id)
+        public HttpResponseMessage Get(int id)
         {
             var settings = new JsonSerializerSettings()
             {
@@ -48,7 +52,10 @@ namespace ShoppingListWebAPI.Controllers
             Context context = new Context();
             Shop shop = context.Shops.FirstOrDefault(x => x.ShopId == id);
             
-            return JsonConvert.SerializeObject(shop, settings);
+            return new HttpResponseMessage()
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(shop, settings), System.Text.Encoding.UTF8, "application/json")
+            };
         }
 
         // POST api/shops/1
@@ -64,7 +71,7 @@ namespace ShoppingListWebAPI.Controllers
             }
         }
 
-        // DELETE api/shops/5
+        //DELETE api/shops/5
         public void Delete(int id)
         {
             using (Context context = new Context())

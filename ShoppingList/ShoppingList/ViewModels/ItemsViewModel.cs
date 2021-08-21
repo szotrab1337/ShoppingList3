@@ -8,6 +8,9 @@ using System.Linq;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
+using ShoppingList.Models.Api;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace ShoppingList.ViewModels
 {
@@ -71,7 +74,7 @@ namespace ShoppingList.ViewModels
             {
                 UserDialogs.Instance.ShowLoading("Ładowanie...", MaskType.Black);
 
-                Items = new ObservableCollection<Item>(await App.Database.GetShopItemsAsync(Shop.ShopId));
+                Items = new ObservableCollection<Item>((await App.Database.GetShopItemsAsync(Shop.ShopId)).OrderBy(x => x.IsBought).ThenBy(x => x.Absent).ToList());
                 Items.ToList().ForEach(x => x.PropertyChanged += ItemPropertyChanged);
                 MessagingCenter.Send(this, "RefreshItemsCount");
 

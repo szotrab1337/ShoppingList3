@@ -53,14 +53,6 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <SwipeView>
-                                <!--<SwipeView.GestureRecognizers>
-                                <DropGestureRecognizer AllowDrop="True"
-                                                       DragOverCommand="{Binding Path=BindingContext.DragOverCommand, Source={x:Reference Items}}"
-                                                       DragOverCommandParameter="{Binding .}"
-                                                       DragLeaveCommand="{Binding Path=BindingContext.DragLeaveCommand, Source={x:Reference Items}}"
-                                                       DropCommand="{Binding Path=BindingContext.DropCommand, Source={x:Reference Items}}"
-                                                       DropCommandParameter="{Binding .}"/>
-                            </SwipeView.GestureRecognizers>-->
                                 <SwipeView.LeftItems>
                                     <SwipeItems Mode="Execute">
 
