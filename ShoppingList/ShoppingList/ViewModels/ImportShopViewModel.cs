@@ -19,6 +19,8 @@ namespace ShoppingList.ViewModels
             Navigation = navigation;
             Title = "Importowanie listy";
 
+            DeleteItemCommand = new Command<ApiShop>(DeleteShopAction);
+            InitializeImportCommand = new Command<ApiShop>(InitializeImportAction);
             RefreshCommand = new Command(() =>
             {
                 IsRefreshing = true;
@@ -32,6 +34,8 @@ namespace ShoppingList.ViewModels
         public INavigation Navigation { get; set; }
 
         public ICommand RefreshCommand { get; set; }
+        public ICommand DeleteItemCommand { get; set; }
+        public ICommand InitializeImportCommand { get; set; }
 
         public ObservableCollection<ApiShop> Shops
         {
@@ -52,12 +56,12 @@ namespace ShoppingList.ViewModels
             try
             {
                 List<ApiShop> apiShops = JsonConvert.DeserializeObject<List<ApiShop>>(ApiAdapter.GetShops());
-                Shops = new ObservableCollection<ApiShop>(apiShops.OrderByDescending(x => x.LastModifiedOnDate));
+                Shops = new ObservableCollection<ApiShop>(apiShops.Where(x => x.Items.Count > 0).OrderByDescending(x => x.LastModifiedOnDate));
                 AssignNumbers();
             }
             catch
             {
-                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + "Nie udało się pobrać list zakupów. " +
+                UserDialogs.Instance.Alert("Nie udało się pobrać list zakupów. " +
                     "Sprawdź czy jesteś w lokalnej sieci domowej oraz czy komputer stacjonarny jest włączony", "Błąd", "OK");
                 Shops = new ObservableCollection<ApiShop>();
             }
@@ -72,6 +76,58 @@ namespace ShoppingList.ViewModels
                 Shops.ToList().ForEach(x => x.Number = Shops.IndexOf(x) + 1);
 
                 UserDialogs.Instance.HideLoading();
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+        
+        private async void DeleteShopAction(ApiShop shop)
+        {
+            try
+            {
+                bool result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+                {
+                    Message = "Czy na pewno chcesz usunąć listę do sklepu " + shop.Name + "?",
+                    OkText = "Tak",
+                    CancelText = "Nie",
+                    Title = "Potwierdzenie",
+                    AndroidStyleId = 2131689474
+                });
+
+                if (!result)
+                    return;
+
+                ApiAdapter.DeleteShop(shop.ShopId.ToString());
+                Shops.Remove(shop);
+                AssignNumbers();
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+        
+        private async void InitializeImportAction(ApiShop shop)
+        {
+            try
+            {
+                bool result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+                {
+                    Message = "Czy na pewno chcesz usunąć listę do sklepu " + shop.Name + "?",
+                    OkText = "Tak",
+                    CancelText = "Nie",
+                    Title = "Potwierdzenie",
+                    AndroidStyleId = 2131689474
+                });
+
+                if (!result)
+                    return;
+
+                ApiAdapter.DeleteShop(shop.ShopId.ToString());
+                Shops.Remove(shop);
+                AssignNumbers();
             }
             catch (Exception ex)
             {

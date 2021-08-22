@@ -72,6 +72,7 @@ namespace ShoppingListWebAPI.Controllers
         }
 
         //DELETE api/shops/5
+        [HttpDelete]
         public void Delete(int id)
         {
             using (Context context = new Context())

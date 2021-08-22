@@ -86,11 +86,11 @@
                                                     Margin="2.5,5,2.5,5">
                                                 <StackLayout Orientation="Horizontal"
                                                              BackgroundColor="{StaticResource ColorPrimary}">
-                                                    <Image Source="download.png"
+                                                    <Image Source="download_black.png"
                                                            Margin="10,0,0,0"
                                                            HeightRequest="20"
                                                            WidthRequest="20"/>
-                                                    <Label Text="Edytuj"
+                                                    <Label Text="Importuj"
                                                            FontSize="15"
                                                            TextColor="{StaticResource BackgroundPrimary}"
                                                            VerticalTextAlignment="Center"

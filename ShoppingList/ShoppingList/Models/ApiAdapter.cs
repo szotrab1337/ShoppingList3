@@ -12,7 +12,7 @@ namespace ShoppingList.Models
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.Timeout = 3000;
+            request.Timeout = 5000;
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             using (Stream stream = response.GetResponseStream())
@@ -38,7 +38,7 @@ namespace ShoppingList.Models
             }
         }
 
-        public static string PostShop(string data, string contentType, string method = "POST")
+        public static string PostShop(string data, string contentType)
         {
             string uri = @"http://192.168.1.100:81/api/shops";
             byte[] dataBytes = Encoding.UTF8.GetBytes(data);
@@ -47,7 +47,7 @@ namespace ShoppingList.Models
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ContentLength = dataBytes.Length;
             request.ContentType = contentType;
-            request.Method = method;
+            request.Method = "POST";
 
             using (Stream requestBody = request.GetRequestStream())
             {
@@ -62,7 +62,7 @@ namespace ShoppingList.Models
             }
         }
         
-        public static string Post(string uri, string data, string contentType, string method = "POST")
+        public static string Post(string uri, string data, string contentType)
         {
             byte[] dataBytes = Encoding.UTF8.GetBytes(data);
 
@@ -70,12 +70,27 @@ namespace ShoppingList.Models
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ContentLength = dataBytes.Length;
             request.ContentType = contentType;
-            request.Method = method;
+            request.Method = "POST";
 
             using (Stream requestBody = request.GetRequestStream())
             {
                 requestBody.Write(dataBytes, 0, dataBytes.Length);
             }
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+        
+        public static string DeleteShop(string id)
+        {
+            string uri = @"http://192.168.1.100:81/api/shops/" + id;
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            request.Method = "DELETE";
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             using (Stream stream = response.GetResponseStream())
