@@ -36,7 +36,7 @@ namespace ShoppingList
             get
             {
                 if (database == null)
-                    database = new Database(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "database.db3"));
+                    database = new Database(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "database_new.db3"));
 
                 return database;
             }

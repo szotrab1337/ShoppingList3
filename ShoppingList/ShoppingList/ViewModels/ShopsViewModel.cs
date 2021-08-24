@@ -319,11 +319,32 @@ namespace ShoppingList.ViewModels
             }
         }
         
-        private void ExportToWebsite(Shop shop)
+        private async void ExportToWebsite(Shop shop)
         {
             try
             {
-                ApiShop apiShop = PrepareShop(shop).Result;
+                ApiShop apiShop = new ApiShop()
+                {
+                    Name = shop.Name,
+                    CreatedOn = DateTime.Now,
+                    ModifiedOn = null,
+                };
+
+                List<Item> items = await App.Database.GetShopItemsAsync(shop.ShopId);
+                apiShop.Items = new List<ApiItem>();
+
+                foreach (Item item in items)
+                {
+                    apiShop.Items.Add(new ApiItem()
+                    {
+                        Name = item.Name,
+                        CreatedOn = DateTime.Now,
+                        Description = item.Description == "-1" ? string.Empty : item.Description,
+                        ModifiedOn = null,
+                        Quantity = item.Quantity,
+                        UnitId = item.UnitId,
+                    });
+                }
 
                 var settings = new JsonSerializerSettings()
                 {
@@ -351,7 +372,28 @@ namespace ShoppingList.ViewModels
         {
             try
             {
-                ApiShop apiShop = PrepareShop(shop).Result;
+                ApiShop apiShop = new ApiShop()
+                {
+                    Name = shop.Name,
+                    CreatedOn = DateTime.Now,
+                    ModifiedOn = null,
+                };
+
+                List<Item> items = await App.Database.GetShopItemsAsync(shop.ShopId);
+                apiShop.Items = new List<ApiItem>();
+
+                foreach (Item item in items)
+                {
+                    apiShop.Items.Add(new ApiItem()
+                    {
+                        Name = item.Name,
+                        CreatedOn = DateTime.Now,
+                        Description = item.Description == "-1" ? string.Empty : item.Description,
+                        ModifiedOn = null,
+                        Quantity = item.Quantity,
+                        UnitId = item.UnitId,
+                    });
+                }
 
                 var settings = new JsonSerializerSettings()
                 {
