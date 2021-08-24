@@ -9,11 +9,11 @@ namespace ShoppingList.Models
     {
         private static readonly List<Unit> Units = new List<Unit>()
         {
-            new Unit(){ UnitId = 0, Name = "sztuki", ShortName = "szt" },
-            new Unit(){ UnitId = 1, Name = "litry", ShortName = "l" },
-            new Unit(){ UnitId = 2, Name = "opakowania", ShortName = "op" },
-            new Unit(){ UnitId = 3, Name = "kilogramy", ShortName = "kg" },
-            new Unit(){ UnitId = 4, Name = "gramy", ShortName = "g" }
+            new Unit(){ UnitId = 1, Name = "sztuki", ShortName = "szt" },
+            new Unit(){ UnitId = 2, Name = "litry", ShortName = "l" },
+            new Unit(){ UnitId = 3, Name = "opakowania", ShortName = "op" },
+            new Unit(){ UnitId = 4, Name = "kilogramy", ShortName = "kg" },
+            new Unit(){ UnitId = 5, Name = "gramy", ShortName = "g" }
         };
 
         public static List<Unit> GetUnits()

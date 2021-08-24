@@ -47,8 +47,6 @@
             <RefreshView IsRefreshing="{Binding IsRefreshing}"
                          Command="{Binding Path=BindingContext.RefreshCommand, Source={x:Reference Items}}">
 
-
-
                 <CollectionView ItemsSource="{Binding Items}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>

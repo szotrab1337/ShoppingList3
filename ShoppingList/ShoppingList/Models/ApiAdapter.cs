@@ -38,16 +38,17 @@ namespace ShoppingList.Models
             }
         }
 
-        public static string PostShop(string data, string contentType)
+        public static string PostShop(string data)
         {
-            string uri = @"http://192.168.1.100:81/api/shops";
+            string uri = @"http://192.168.1.100:81/api/shops?id=1";
             byte[] dataBytes = Encoding.UTF8.GetBytes(data);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ContentLength = dataBytes.Length;
-            request.ContentType = contentType;
+            request.ContentType = "application/json";
             request.Method = "POST";
+            request.Timeout = 5000;
 
             using (Stream requestBody = request.GetRequestStream())
             {

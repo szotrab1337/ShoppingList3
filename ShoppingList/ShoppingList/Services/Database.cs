@@ -20,6 +20,11 @@ namespace ShoppingList.Services
         {
             return _database.Table<Shop>().OrderBy(x => x.Number).ToListAsync();
         }
+        
+        public Task<Shop> GetShopByNameAsync(string shopName)
+        {
+            return _database.Table<Shop>().FirstOrDefaultAsync(x => x.Name == shopName);
+        }
 
         public Task InsertShopAsync(Shop shop)
         {
@@ -63,7 +68,7 @@ namespace ShoppingList.Services
         public Task InsertItemAsync(Item item)
         {
             return _database.InsertAsync(item);
-        }
+        }    
 
         public Task UpdateItemAsync(Item item)
         {
@@ -74,63 +79,5 @@ namespace ShoppingList.Services
         {
             return _database.UpdateAllAsync(items);
         }
-
-        //public Task<Item> GetItemAsync(Item item)
-        //{
-        //    return _database.Table<Item>().Where(x => x.ItemID == item.ItemID).FirstOrDefaultAsync();
-        //}
-        //public Task<Shop> GetShopAsync(Shop shop)
-        //{
-        //    return _database.Table<Shop>().Where(x => x.ShopID == shop.ShopID).FirstOrDefaultAsync();
-        //}
-
-        //public Task<Shop> GetShopByID(int id)
-        //{
-        //    return _database.Table<Shop>().Where(x => x.ShopID == id).FirstOrDefaultAsync();
-        //}
-
-        //public Task<Shop> GetShopByName(string Name)
-        //{
-        //    return _database.Table<Shop>().Where(x => x.Name == Name).FirstOrDefaultAsync();
-        //}
-
-
-
-        //public Task UpdateItemAsync(Item item)
-        //{
-        //    return _database.UpdateAsync(item);
-        //}
-
-        //public Task InsertItemAsync(Item item)
-        //{
-        //    return _database.InsertOrReplaceAsync(item);
-        //}
-        //public Task InsertShopAsync(Shop shop)
-        //{
-        //    return _database.InsertOrReplaceAsync(shop);
-        //}
-        //public Task DeleteItemAsync(Item item)
-        //{
-        //    return _database.DeleteAsync(item);
-        //}
-        //public Task DeleteShopAsync(Shop shop)
-        //{
-        //    return _database.DeleteAsync(shop);
-        //}
-
-        //public Task<Setting> GetSettingsAsync()
-        //{
-        //    return _database.Table<Setting>().FirstOrDefaultAsync();
-        //}
-
-        //public Task InsertSettingAsync(Setting setting)
-        //{
-        //    return _database.InsertAsync(setting);
-        //}
-
-        //public Task UpdateSettingAsync(Setting setting)
-        //{
-        //    return _database.UpdateAsync(setting);
-        //}
     }
 }

@@ -1,12 +1,18 @@
 ﻿using Acr.UserDialogs;
+using Newtonsoft.Json;
 using ShoppingList.Models;
+using ShoppingList.Models.Api;
 using ShoppingList.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.Extensions;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace ShoppingList.ViewModels
@@ -27,11 +33,24 @@ namespace ShoppingList.ViewModels
             DragStartingCommand = new Command<Shop>(DragStartingAction);
             DragOverCommand = new Command<Shop>(DragOverAction);
             DragLeaveCommand = new Command(DragLeaveAction);
+            ExportShopCommand = new Command<Shop>(ExportShopAction);
             DropCommand = new Command<Shop>(DropAction);
+            RefreshCommand = new Command(() =>
+            {
+                IsRefreshing = true;
+                LoadShops();
+                AssignNumbers();
+                IsRefreshing = false;
+            });
 
             LoadShops();
 
             MessagingCenter.Subscribe<ItemsViewModel>(this, "RefreshItemsCount", (LoadAgain) => { CalculateItemsToBuy(); });
+            MessagingCenter.Subscribe<ImportShopViewModel>(this, "RefreshItemsAfterImport", (LoadAgain) =>
+            {
+                LoadShops();
+                AssignNumbers();
+            });
         }
 
         public INavigation Navigation { get; set; }
@@ -40,6 +59,8 @@ namespace ShoppingList.ViewModels
         public ICommand AddShopCommand { get; set; }
         public ICommand EditShopCommand { get; set; }
         public ICommand DeleteShopCommand { get; set; }
+        public ICommand RefreshCommand { get; set; }
+        public ICommand ExportShopCommand { get; set; }
 
         public ICommand DragStartingCommand { get; set; }
         public ICommand DragOverCommand { get; set; }
@@ -52,6 +73,13 @@ namespace ShoppingList.ViewModels
             set { _Shops = value; OnPropertyChanged("Shops"); }
         }
         private ObservableCollection<Shop> _Shops;
+
+        public bool IsRefreshing
+        {
+            get => _IsRefreshing;
+            set { _IsRefreshing = value; OnPropertyChanged("IsRefreshing"); }
+        }
+        private bool _IsRefreshing;
 
         private async void LoadShops()
         {
@@ -175,10 +203,15 @@ namespace ShoppingList.ViewModels
                 List<Item> items = new List<Item>(await App.Database.GetShopItemsAsync(shop.ShopId));
 
                 if (items != null && items.Count > 0)
-                    await App.Database.DeleteItemsAsync(items);
+                {
+                    foreach (Item item in items)
+                    {
+                        await App.Database.DeleteItemAsync(item);
+                    }
+                }
 
-                await App.Database.DeleteShopAsync(shop);
                 Shops.Remove(shop);
+                await App.Database.DeleteShopAsync(shop);
                 AssignNumbers();
             }
             catch (Exception ex)
@@ -253,6 +286,124 @@ namespace ShoppingList.ViewModels
             {
                 UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
             }
+        }
+        
+        private async void ExportShopAction(Shop shop)
+        {
+            try
+            {
+                List<Item> items = await App.Database.GetShopItemsAsync(shop.ShopId);
+
+                if(items.Count == 0)
+                {
+                    UserDialogs.Instance.Toast("W sklepie nie ma przedmiotów do wyeksportowania.");
+                    return;
+                }
+
+                string[] choices = new[] { "Strona internetowa", "Specjalny tekst" };
+
+                string result = await UserDialogs.Instance.ActionSheetAsync("Wybierz...", string.Empty, "Anuluj", CancellationToken.None, choices);
+
+                if (string.IsNullOrWhiteSpace(result))
+                    return;
+
+                if (result.Equals("Strona internetowa"))
+                    ExportToWebsite(shop);
+
+                if (result.Equals("Specjalny tekst"))
+                    ExportToClipboard(shop);
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert("Bład!\r\n\r\n" + ex.ToString(), "Błąd", "OK");
+            }
+        }
+        
+        private void ExportToWebsite(Shop shop)
+        {
+            try
+            {
+                ApiShop apiShop = PrepareShop(shop).Result;
+
+                var settings = new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    Formatting = Formatting.None,
+                    Error = (sender, args) =>
+                    {
+                        args.ErrorContext.Handled = true;
+                    },
+                };
+
+                StringContent message = new StringContent(JsonConvert.SerializeObject(apiShop, settings), System.Text.Encoding.UTF8, "application/json");
+
+                ApiAdapter.PostShop(message.ReadAsStringAsync().Result);
+                UserDialogs.Instance.Toast("Eksport zakończony powodzeniem.");
+            }
+            catch 
+            {
+                UserDialogs.Instance.Alert("Nie udało się wykonać eksportu. " +
+                    "Sprawdź czy jesteś w lokalnej sieci domowej oraz czy komputer stacjonarny jest włączony.", "Błąd", "OK");
+            }
+        }
+
+        private async void ExportToClipboard(Shop shop)
+        {
+            try
+            {
+                ApiShop apiShop = PrepareShop(shop).Result;
+
+                var settings = new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    Formatting = Formatting.None,
+                    Error = (sender, args) =>
+                    {
+                        args.ErrorContext.Handled = true;
+                    },
+                };
+
+                StringContent message = new StringContent(JsonConvert.SerializeObject(apiShop, settings), System.Text.Encoding.UTF8, "application/json");
+
+                await Share.RequestAsync(new ShareTextRequest
+                {
+                    Text = message.ReadAsStringAsync().Result,
+                    Title = "Udostępniona lista zakupów"
+                });
+            }
+            catch
+            {
+                UserDialogs.Instance.Alert("Nie udało się wykonać eksportu. " +
+                    "Sprawdź czy jesteś w lokalnej sieci domowej oraz czy komputer stacjonarny jest włączony.", "Błąd", "OK");
+            }
+        }
+
+        private async Task<ApiShop> PrepareShop(Shop shop)
+        {
+            ApiShop apiShop = new ApiShop()
+            {
+                Name = shop.Name,
+                CreatedOn = DateTime.Now,
+                ModifiedOn = null,
+            };
+
+            List<Item> items = await App.Database.GetShopItemsAsync(shop.ShopId);
+            apiShop.Items = new List<ApiItem>();
+
+            foreach (Item item in items)
+            {
+                apiShop.Items.Add(new ApiItem()
+                {
+                    Name = item.Name,
+                    CreatedOn = DateTime.Now,
+                    Description = item.Description == "-1" ? string.Empty : item.Description,
+                    ModifiedOn = null,
+                    Quantity = item.Quantity,
+                    UnitId = item.UnitId,
+                });
+            }
+
+            return apiShop;
         }
     }
 }

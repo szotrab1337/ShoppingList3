@@ -13,161 +13,211 @@
         <StackLayout Margin="5,10,5,10"
                      AbsoluteLayout.LayoutFlags="All"
                      AbsoluteLayout.LayoutBounds="0,0,1,1">
-            <CollectionView ItemsSource="{Binding Shops}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <SwipeView>
-                            <SwipeView.GestureRecognizers>
-                                <DropGestureRecognizer AllowDrop="True"
-                                                       DragOverCommand="{Binding Path=BindingContext.DragOverCommand, Source={x:Reference Shops}}"
-                                                       DragOverCommandParameter="{Binding .}"
-                                                       DragLeaveCommand="{Binding Path=BindingContext.DragLeaveCommand, Source={x:Reference Shops}}"
-                                                       DropCommand="{Binding Path=BindingContext.DropCommand, Source={x:Reference Shops}}"
-                                                       DropCommandParameter="{Binding .}"/>
-                            </SwipeView.GestureRecognizers>
-                            <SwipeView.RightItems>
-                                <SwipeItems>
 
-                                    <SwipeItemView Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
-                                                   CommandParameter="{Binding .}"
-                                                   BackgroundColor="{StaticResource BackgroundPrimary}"
-                                                   Margin="0,0,10,0">
-                                        <Frame  Margin="2.5,5,2.5,5"
-                                                BackgroundColor="{StaticResource BackgroundPrimary}"
-                                                Padding="0"
-                                                CornerRadius="10">
-                                            <StackLayout Orientation="Horizontal"
-                                                         BackgroundColor="#CF6679">
-                                                <Image Source="thrash.png"
-                                                       Margin="10,0,0,0"
-                                                       HeightRequest="20"
-                                                       WidthRequest="20"/>
-                                                <Label Text="Usuń"
-                                                       FontSize="15"
-                                                       TextColor="{StaticResource BackgroundPrimary}"
-                                                       VerticalTextAlignment="Center"
-                                                       HorizontalTextAlignment="Center"
-                                                       Margin="0,10,0,10"/>
-                                            </StackLayout>
-                                        </Frame>
-                                    </SwipeItemView>
+            <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                         Command="{Binding Path=BindingContext.RefreshCommand, Source={x:Reference Shops}}">
 
-                                    <SwipeItemView Command="{Binding Path=BindingContext.EditShopCommand, Source={x:Reference Shops}}"
-                                                   CommandParameter="{Binding .}"
+                <CollectionView ItemsSource="{Binding Shops}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <SwipeView.GestureRecognizers>
+                                    <DropGestureRecognizer AllowDrop="True"
+                                                           DragOverCommand="{Binding Path=BindingContext.DragOverCommand, Source={x:Reference Shops}}"
+                                                           DragOverCommandParameter="{Binding .}"
+                                                           DragLeaveCommand="{Binding Path=BindingContext.DragLeaveCommand, Source={x:Reference Shops}}"
+                                                           DropCommand="{Binding Path=BindingContext.DropCommand, Source={x:Reference Shops}}"
+                                                           DropCommandParameter="{Binding .}"/>
+                                </SwipeView.GestureRecognizers>
+                                <SwipeView.LeftItems>
+                                    <SwipeItems>
+
+                                        <SwipeItemView Command="{Binding Path=BindingContext.ExportShopCommand, Source={x:Reference Shops}}"
+                                                       CommandParameter="{Binding .}"
+                                                       BackgroundColor="{StaticResource BackgroundPrimary}"
+                                                       Margin="0,0,10,0">
+                                            <Frame Padding="0" 
+                                                   Margin="2.5,5,2.5,5"
                                                    BackgroundColor="{StaticResource BackgroundPrimary}"
-                                                   Margin="0,0,10,0">
-                                        <Frame  Margin="2.5,5,2.5,5"
-                                                BackgroundColor="{StaticResource BackgroundPrimary}"
-                                                Padding="0"
-                                                CornerRadius="10">
-                                            <StackLayout Orientation="Horizontal"
-                                                         BackgroundColor="{StaticResource ColorPrimary}">
-                                                <Image Source="edit.png"
-                                                       Margin="10,0,0,0"
-                                                       HeightRequest="20"
-                                                       WidthRequest="20"/>
-                                                <Label Text="Edytuj"
-                                                       FontSize="15"
-                                                       TextColor="{StaticResource BackgroundPrimary}"
-                                                       VerticalTextAlignment="Center"
-                                                       HorizontalTextAlignment="Center"
-                                                       Margin="0,10,0,10"/>
-                                            </StackLayout>
-                                        </Frame>
-                                    </SwipeItemView>
-                                    
-                                </SwipeItems>
-                            </SwipeView.RightItems>
-                            
-                            <ContentView Padding="5"
-                                         Background="#121212">
-                                <StackLayout>
-                                    <Line BackgroundColor="{StaticResource TextPrimary}" 
-                                          IsVisible="{Binding IsBeingDraggedOver}" 
-                                          HeightRequest="3"
-                                          Margin="0,0,0,2"/>
-                                    <Frame Padding="10"
-                                           CornerRadius="10"
-                                           xct:TouchEffect.PressedOpacity="0.6">
-                                        <Frame.Style>
-                                            <Style TargetType="Frame">
-                                                <Style.Triggers>
-                                                    <DataTrigger TargetType="Frame" 
-                                                                 Binding="{Binding IsBeingDragged}" 
-                                                                 Value="true">
-                                                        <Setter Property="BackgroundColor" 
-                                                                Value="{StaticResource TextDisabled}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger TargetType="Frame" 
-                                                                 Binding="{Binding IsBeingDragged}" 
-                                                                 Value="false">
-                                                        <Setter Property="BackgroundColor" 
-                                                                Value="{StaticResource BackgroundSecondary}"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Frame.Style>
-                                        <StackLayout Orientation="Horizontal">
-                                            <StackLayout VerticalOptions="Center"
-                                                         Margin="0,0,20,0">
-                                                <Label Text="{Binding Number}"
-                                                       FontSize="50"
-                                                       TextColor="{StaticResource ColorPrimary}"/>
-                                            </StackLayout>
-                                            <StackLayout>
-                                                <StackLayout>
-                                                    <Label Text="{Binding Name}"
-                                                           Margin="0,5,0,0"
-                                                           FontSize="22"
-                                                           TextColor="{StaticResource TextPrimary}"/>
+                                                   CornerRadius="10">
+                                                <StackLayout Orientation="Horizontal"
+                                                             BackgroundColor="#f8ac94">
+                                                    <Image Source="download_black.png"
+                                                           Rotation="180"
+                                                           Margin="10,0,0,0"
+                                                           HeightRequest="20"
+                                                           WidthRequest="20"/>
+                                                    <Label FontSize="15"
+                                                           VerticalTextAlignment="Center"
+                                                           VerticalOptions="CenterAndExpand"
+                                                           HorizontalTextAlignment="Start"
+                                                           TextColor="{StaticResource BackgroundPrimary}"
+                                                           Margin="0,10,5,10">
+                                                        <Label.Style>
+                                                            <Style TargetType="Label">
+                                                                <Setter Property="Text"
+                                                                        Value="Eksportuj"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger TargetType="Label"
+                                                                                 Binding="{Binding IsBought}"
+                                                                                 Value="True">
+                                                                        <Setter Property="Text"
+                                                                                Value="Odznacz"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Label.Style>
+                                                    </Label>
                                                 </StackLayout>
-                                                <StackLayout Orientation="Vertical"
-                                                             VerticalOptions="EndAndExpand">
-                                                    <StackLayout Orientation="Horizontal"
-                                                                 VerticalOptions="End">
-                                                        <Label Text="Liczba rzeczy do kupienia: "
-                                                               Margin="0,0,0,5"
-                                                               FontSize="13"
-                                                               TextColor="{StaticResource TextSecondary}"
-                                                               FontAttributes="Italic"/>
+                                            </Frame>
+                                        </SwipeItemView>
 
-                                                        <Label Text="{Binding QuantityToBuy}"
-                                                               Margin="0,0,0,5"
-                                                               FontSize="13"
-                                                               TextColor="{StaticResource TextSecondary}"
-                                                               FontAttributes="Bold"/>
-                                                        
-                                                        <Label Text="z"
-                                                               Margin="0,0,0,5"
-                                                               FontSize="13"
-                                                               TextColor="{StaticResource TextSecondary}"
-                                                               FontAttributes="None"/>
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
 
-                                                        <Label Text="{Binding QuantityAll}"
-                                                               Margin="0,0,0,5"
-                                                               FontSize="13"
-                                                               TextColor="{StaticResource TextSecondary}"
-                                                               FontAttributes="Bold"/>
+                                        <SwipeItemView Command="{Binding Path=BindingContext.DeleteShopCommand, Source={x:Reference Shops}}"
+                                                       CommandParameter="{Binding .}"
+                                                       BackgroundColor="{StaticResource BackgroundPrimary}"
+                                                       Margin="0,0,10,0">
+                                            <Frame  Margin="2.5,5,2.5,5"
+                                                    BackgroundColor="{StaticResource BackgroundPrimary}"
+                                                    Padding="0"
+                                                    CornerRadius="10">
+                                                <StackLayout Orientation="Horizontal"
+                                                             BackgroundColor="#CF6679">
+                                                    <Image Source="thrash.png"
+                                                           Margin="10,0,0,0"
+                                                           HeightRequest="20"
+                                                           WidthRequest="20"/>
+                                                    <Label Text="Usuń"
+                                                           FontSize="15"
+                                                           TextColor="{StaticResource BackgroundPrimary}"
+                                                           VerticalTextAlignment="Center"
+                                                           HorizontalTextAlignment="Center"
+                                                           Margin="0,10,0,10"/>
+                                                </StackLayout>
+                                            </Frame>
+                                        </SwipeItemView>
+
+                                        <SwipeItemView Command="{Binding Path=BindingContext.EditShopCommand, Source={x:Reference Shops}}"
+                                                       CommandParameter="{Binding .}"
+                                                       BackgroundColor="{StaticResource BackgroundPrimary}"
+                                                       Margin="0,0,10,0">
+                                            <Frame  Margin="2.5,5,2.5,5"
+                                                    BackgroundColor="{StaticResource BackgroundPrimary}"
+                                                    Padding="0"
+                                                    CornerRadius="10">
+                                                <StackLayout Orientation="Horizontal"
+                                                             BackgroundColor="{StaticResource ColorPrimary}">
+                                                    <Image Source="edit.png"
+                                                           Margin="10,0,0,0"
+                                                           HeightRequest="20"
+                                                           WidthRequest="20"/>
+                                                    <Label Text="Edytuj"
+                                                           FontSize="15"
+                                                           TextColor="{StaticResource BackgroundPrimary}"
+                                                           VerticalTextAlignment="Center"
+                                                           HorizontalTextAlignment="Center"
+                                                           Margin="0,10,0,10"/>
+                                                </StackLayout>
+                                            </Frame>
+                                        </SwipeItemView>
+
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <ContentView Padding="5"
+                                             Background="#121212">
+                                    <StackLayout>
+                                        <Line BackgroundColor="{StaticResource TextPrimary}" 
+                                              IsVisible="{Binding IsBeingDraggedOver}" 
+                                              HeightRequest="3"
+                                              Margin="0,0,0,2"/>
+                                        <Frame Padding="10"
+                                               CornerRadius="10"
+                                               xct:TouchEffect.PressedOpacity="0.6">
+                                            <Frame.Style>
+                                                <Style TargetType="Frame">
+                                                    <Style.Triggers>
+                                                        <DataTrigger TargetType="Frame" 
+                                                                     Binding="{Binding IsBeingDragged}" 
+                                                                     Value="true">
+                                                            <Setter Property="BackgroundColor" 
+                                                                    Value="{StaticResource TextDisabled}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Frame" 
+                                                                     Binding="{Binding IsBeingDragged}" 
+                                                                     Value="false">
+                                                            <Setter Property="BackgroundColor" 
+                                                                    Value="{StaticResource BackgroundSecondary}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Frame.Style>
+                                            <StackLayout Orientation="Horizontal">
+                                                <StackLayout VerticalOptions="Center"
+                                                             Margin="0,0,20,0">
+                                                    <Label Text="{Binding Number}"
+                                                           FontSize="50"
+                                                           TextColor="{StaticResource ColorPrimary}"/>
+                                                </StackLayout>
+                                                <StackLayout>
+                                                    <StackLayout>
+                                                        <Label Text="{Binding Name}"
+                                                               Margin="0,5,0,0"
+                                                               FontSize="22"
+                                                               TextColor="{StaticResource TextPrimary}"/>
+                                                    </StackLayout>
+                                                    <StackLayout Orientation="Vertical"
+                                                                 VerticalOptions="EndAndExpand">
+                                                        <StackLayout Orientation="Horizontal"
+                                                                     VerticalOptions="End">
+                                                            <Label Text="Liczba rzeczy do kupienia: "
+                                                                   Margin="0,0,0,5"
+                                                                   FontSize="13"
+                                                                   TextColor="{StaticResource TextSecondary}"
+                                                                   FontAttributes="Italic"/>
+
+                                                            <Label Text="{Binding QuantityToBuy}"
+                                                                   Margin="0,0,0,5"
+                                                                   FontSize="13"
+                                                                   TextColor="{StaticResource TextSecondary}"
+                                                                   FontAttributes="Bold"/>
+
+                                                            <Label Text="z"
+                                                                   Margin="0,0,0,5"
+                                                                   FontSize="13"
+                                                                   TextColor="{StaticResource TextSecondary}"
+                                                                   FontAttributes="None"/>
+
+                                                            <Label Text="{Binding QuantityAll}"
+                                                                   Margin="0,0,0,5"
+                                                                   FontSize="13"
+                                                                   TextColor="{StaticResource TextSecondary}"
+                                                                   FontAttributes="Bold"/>
+                                                        </StackLayout>
                                                     </StackLayout>
                                                 </StackLayout>
                                             </StackLayout>
-                                        </StackLayout>
-                                        <Frame.GestureRecognizers>
-                                            <DragGestureRecognizer CanDrag="True"
-                                                           DragStartingCommand="{Binding Path=BindingContext.DragStartingCommand, Source={x:Reference Shops}}"
-                                                           DragStartingCommandParameter="{Binding .}" />
-                                            <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                      Command="{Binding Path=BindingContext.OpenShopCommand, Source={x:Reference Shops}}"
-                                                      CommandParameter="{Binding .}"/>
-                                        </Frame.GestureRecognizers>
-                                    </Frame>
-                                </StackLayout>
+                                            <Frame.GestureRecognizers>
+                                                <DragGestureRecognizer CanDrag="True"
+                                                                       DragStartingCommand="{Binding Path=BindingContext.DragStartingCommand, Source={x:Reference Shops}}"
+                                                                       DragStartingCommandParameter="{Binding .}" />
+                                                <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                      Command="{Binding Path=BindingContext.OpenShopCommand, Source={x:Reference Shops}}"
+                                                                      CommandParameter="{Binding .}"/>
+                                            </Frame.GestureRecognizers>
+                                        </Frame>
+                                    </StackLayout>
 
-                            </ContentView>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                </ContentView>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
         </StackLayout>
 
         <ImageButton Source="plus.png"

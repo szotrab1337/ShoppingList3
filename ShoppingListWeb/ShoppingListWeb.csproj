@@ -318,6 +318,7 @@
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\fontawesome.css" />
     <Content Include="Content\fontawesome.min.css" />
+    <Content Include="Content\Images\icon_web.svg" />
     <Content Include="Content\Images\logo-mini.svg" />
     <Content Include="Content\Images\logo.svg" />
     <Content Include="Content\regular.css" />

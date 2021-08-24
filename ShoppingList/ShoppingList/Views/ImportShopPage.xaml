@@ -6,14 +6,11 @@
              Title="{Binding Title}"
              x:Name="Import">
     
-    <!--<ContentPage.ToolbarItems>
-        <ToolbarItem Text="Usuń wszystko"
-                     Command="{Binding Path=BindingContext.DeleteAllCommand, Source={x:Reference Items}}"
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Importuj ze schowka"
+                     Command="{Binding Path=BindingContext.ImportFromClipboardCommand, Source={x:Reference Import}}"
                      Order="Secondary"/>
-        <ToolbarItem Text="Usuń kupione"
-                     Command="{Binding Path=BindingContext.DeleteBoughtCommand, Source={x:Reference Items}}"
-                     Order="Secondary"/>
-    </ContentPage.ToolbarItems>-->
+    </ContentPage.ToolbarItems>
 
     <AbsoluteLayout>
 
