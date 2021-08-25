@@ -27,7 +27,8 @@
                    FontSize="20"
                    TextColor="#616161"
                    HorizontalOptions="CenterAndExpand"
-                   VerticalOptions="CenterAndExpand">
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center">
                 <Label.Style>
                     <Style TargetType="Label">
                         <Setter Property="IsVisible"

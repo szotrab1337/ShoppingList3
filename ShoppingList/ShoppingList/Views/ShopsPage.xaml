@@ -10,9 +10,31 @@
 
     <AbsoluteLayout>
         
-        <StackLayout Margin="5,10,5,10"
+        <Grid Margin="5,10,5,10"
                      AbsoluteLayout.LayoutFlags="All"
                      AbsoluteLayout.LayoutBounds="0,0,1,1">
+
+            <Label Text="Dodaj swój pierwszy sklep!"
+                   FontSize="20"
+                   TextColor="#616161"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Shops.Count}"
+                                         Value="0">
+                                <Setter Property="IsVisible"
+                                        Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
 
             <RefreshView IsRefreshing="{Binding IsRefreshing}"
                          Command="{Binding Path=BindingContext.RefreshCommand, Source={x:Reference Shops}}">
@@ -213,7 +235,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </RefreshView>
-        </StackLayout>
+        </Grid>
 
         <ImageButton Source="plus.png"
                      BackgroundColor="Transparent"

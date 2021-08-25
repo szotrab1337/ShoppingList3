@@ -15,14 +15,15 @@
     <AbsoluteLayout>
 
         <Grid Margin="5,10,5,10"
-                     AbsoluteLayout.LayoutFlags="All"
-                     AbsoluteLayout.LayoutBounds="0,0,1,1">
+              AbsoluteLayout.LayoutFlags="All"
+              AbsoluteLayout.LayoutBounds="0,0,1,1">
 
             <Label Text="Nie ma żadnej listy do zaimportowania!"
                    FontSize="20"
                    TextColor="#616161"
                    HorizontalOptions="CenterAndExpand"
-                   VerticalOptions="CenterAndExpand">
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center">
                 <Label.Style>
                     <Style TargetType="Label">
                         <Setter Property="IsVisible"

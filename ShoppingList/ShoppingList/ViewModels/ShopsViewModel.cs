@@ -412,6 +412,8 @@ namespace ShoppingList.ViewModels
                     Text = message.ReadAsStringAsync().Result,
                     Title = "Udostępniona lista zakupów"
                 });
+
+                UserDialogs.Instance.Toast("Eksport zakończony powodzeniem.");
             }
             catch
             {

@@ -4,6 +4,7 @@
        xmlns:local="clr-namespace:ShoppingList.Views"
        Title="ShoppingList"
        x:Class="ShoppingList.AppShell"
+       FlyoutHeaderTemplate="{DataTemplate local:FlyoutHeader}"
         FlyoutBackgroundColor="{StaticResource BackgroundPrimary}">
 
     <!--
@@ -88,6 +89,8 @@
         FlyoutDisplayOptions="AsMultipleItems" will create a separate flyout item for each child element    
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
+    
+    
     <FlyoutItem Title="Lista sklepów" Icon="list.png">
         <ShellContent Route="ShopsPage" ContentTemplate="{DataTemplate local:ShopsPage}" />
     </FlyoutItem>

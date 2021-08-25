@@ -141,7 +141,7 @@ namespace ShoppingList.ViewModels
 
                 string result = await UserDialogs.Instance.ActionSheetAsync("Wybierz...", string.Empty, "Anuluj", CancellationToken.None, choices);
 
-                if (string.IsNullOrWhiteSpace(result))
+                if (result == "Anuluj" || string.IsNullOrWhiteSpace(result))
                     return;
 
                 if (result.Equals("Utwórz nowy sklep"))
@@ -221,9 +221,7 @@ namespace ShoppingList.ViewModels
 
                 string result = await UserDialogs.Instance.ActionSheetAsync("Wybierz...", string.Empty, "Anuluj", CancellationToken.None, choices);
 
-                UserDialogs.Instance.Toast(result.ToString());
-
-                if (string.IsNullOrWhiteSpace(result))
+                if (result == "Anuluj" || string.IsNullOrWhiteSpace(result))
                     return;
 
                 int shopId = Convert.ToInt32(result.Substring(result.IndexOf("ID: ") + 4));
