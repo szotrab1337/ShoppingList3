@@ -124,6 +124,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ShoppingListsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -133,9 +134,15 @@
     <Compile Include="Models\FileLogger.cs" />
     <Compile Include="Models\GenericContext.cs" />
     <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\PasswordAdapter.cs" />
     <Compile Include="Models\Shop.cs" />
     <Compile Include="Models\TextUtilities.cs" />
     <Compile Include="Models\Unit.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserFilterAttribute.cs" />
+    <Compile Include="Models\UserIdentity.cs" />
+    <Compile Include="Models\UserIdentityBase.cs" />
+    <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +326,7 @@
     <Content Include="Content\fontawesome.css" />
     <Content Include="Content\fontawesome.min.css" />
     <Content Include="Content\Images\icon_web.svg" />
+    <Content Include="Content\Images\logo-dark.svg" />
     <Content Include="Content\Images\logo-mini.svg" />
     <Content Include="Content\Images\logo.svg" />
     <Content Include="Content\regular.css" />
@@ -480,8 +488,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ShoppingLists\List.cshtml" />
     <Content Include="webfonts\fa-brands-400.svg" />
@@ -502,6 +508,8 @@
     <Content Include="Views\ShoppingLists\EditShoppingList.cshtml" />
     <Content Include="Views\ShoppingLists\GroceryList.cshtml" />
     <Content Include="Views\ShoppingLists\EditItem.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

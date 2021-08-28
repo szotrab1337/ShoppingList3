@@ -13,6 +13,7 @@ namespace ShoppingListWeb.Controllers
     public class ShoppingListsController : Controller
     {
         Context Context;
+
         public ActionResult List()
         {
             try

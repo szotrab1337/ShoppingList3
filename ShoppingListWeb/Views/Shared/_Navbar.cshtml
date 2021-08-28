@@ -1,4 +1,6 @@
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+@using ShoppingListWeb.Models;
+
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg" id="test">
     <div class="container-fluid">
         <a class="navbar-brand" href="@Url.Action("Index", "Home")">
             <img src="~/Content/Images/logo.svg" alt="" ; class="d-inline-block align-text-top" height="40">
@@ -9,7 +11,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarTop">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="@Url.Action("Index", "Home")">Strona g³ówna</a>
                 </li>
@@ -17,7 +19,28 @@
                     <a class="nav-link" href="@Url.Action("List", "ShoppingLists")">Listy zakupów</a>
                 </li>
             </ul>
+
+            <div class="d-flex">
+                @if (UserIdentity.IsLoggedIn == true)
+                {
+                <a class="nav-link text-white" style="margin-left:-20px;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    @UserIdentity.Fullname  <i style="margin-left:10px;" class="fas fa-user"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" style="margin-top:-10px;" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#">Konto</a></li>
+                    @if (UserIdentity.Role == "Admin")
+                    {
+                        <li><a class="dropdown-item" href="#">Zarz¹dzaj u¿ytkownikami</a></li>
+                    }
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")">Wyloguj</a></li>
+                </ul>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Account")" class="btn btn-outline-light">Zaloguj</a>
+                }
+            </div>
         </div>
     </div>
 </nav>
-
