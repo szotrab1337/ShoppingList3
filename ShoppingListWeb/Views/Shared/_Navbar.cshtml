@@ -27,18 +27,18 @@
                     @UserIdentity.Fullname  <i style="margin-left:10px;" class="fas fa-user"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" style="margin-top:-10px;" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="@Url.Action("Account", "Account")">Konto</a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Account", "Account")"><i style="margin-right:15px;" class="fas fa-user"></i>Konto</a></li>
                     @if (UserIdentity.Role == "Admin")
                     {
-                        <li><a class="dropdown-item" href="#">Zarz퉐zaj u퓓tkownikami</a></li>
+                        <li><a class="dropdown-item" href="#"><i style="margin-right:10px;" class="fas fa-user-cog"></i>Zarz퉐zaj u퓓tkownikami</a></li>
                     }
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")">Wyloguj</a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")"><i style="margin-right:15px;" class="fas fa-sign-out-alt"></i>Wyloguj</a></li>
                 </ul>
                 }
                 else
                 {
-                    <a href="@Url.Action("Login", "Account")" class="btn btn-outline-light">Zaloguj</a>
+                    <a href="@Url.Action("Login", "Account")" class="btn btn-outline-light"><i style="margin-right:5px;" class="fas fa-sign-in-alt"></i> Zaloguj</a>
                 }
             </div>
         </div>
