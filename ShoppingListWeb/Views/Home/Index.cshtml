@@ -1,5 +1,14 @@
-﻿@{ 
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@if (ViewBag.Success != null)
+{
+    <div class="col-sm-12">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <span class="badge rounded-pill bg-success">Powodzenie!</span>
+            @ViewBag.Success
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" />
+        </div>
+    </div>
 }
 
 <div class="jumbotron">

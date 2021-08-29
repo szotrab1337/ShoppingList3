@@ -65,6 +65,8 @@ namespace ShoppingListWeb.Models
 
                 if (user.IsAdmin)
                     Role = "Admin";
+                else
+                    Role = "Użytkownik";
             }
 
             ModifyCookie();

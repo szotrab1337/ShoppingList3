@@ -25,9 +25,14 @@ namespace ShoppingListWeb.Models
         [NotMapped]
         [DataType(DataType.Password)]
         [Display(Name = "Potwierdź hasło")]
-        [Compare("Password", ErrorMessage = "Hasła muszą być identyczne.")]
+        [Compare("Password", ErrorMessage = "Hasła muszą być identyczne1.")]
         public string PasswordConfirm { get; set; }
 
+        public DateTime CreatedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
         public bool IsAdmin { get; set; }
+
+        [NotMapped]
+        public string Fullname => $"{Name} {Surname}";
     }
 }

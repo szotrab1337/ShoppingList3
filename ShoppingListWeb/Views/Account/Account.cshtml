@@ -1,0 +1,78 @@
+﻿@using ShoppingListWeb.Models
+@model EditAccount
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="bg-white mt-4 p-4 card">
+                    <div class="d-flex justify-content-between">
+                        <div class="container overrideContainer">
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <h4 class="pb-1">@Model.Fullname</h4>
+                                    <p class="mb-0 text-muted">@UserIdentity.User.Email</p>
+                                </div>
+                                <div class="text-end col-lg-5" id="editUserArea">
+                                    <br/>
+                                    <span class="badge bg-primary">@UserIdentity.Role</span>
+                                    <div class="text-muted"><small>Dołączył @Model.CreatedOnFormatted</small></div>
+                                    @if (Model.ModifiedOn.HasValue)
+                                    {
+                                    <div class="text-muted"><small>Modyfikowano @Model.ModifiedOnFormatted</small></div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            <br/>
+                @using (Html.BeginForm("Account", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @*<div class="validation-message">
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                    </div>*@
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(m => m.Name)
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(m => m.Surname)
+                            @Html.TextBoxFor(m => m.Surname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group col-12">
+                        @Html.LabelFor(m => m.Email)
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <br />
+                    <div class="form-group col-12">
+                        @Html.LabelFor(m => m.Password)
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(m => m.NewPassword)
+                            @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(m => m.ConfirmNewPassword)
+                            @Html.PasswordFor(m => m.ConfirmNewPassword, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ConfirmNewPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-dark">Zapisz zmiany</button>
+                    </div>
+                }
+            </div>
+        </div>
+</div>

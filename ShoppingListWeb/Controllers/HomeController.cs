@@ -11,6 +11,9 @@ namespace ShoppingListWeb.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
+            if (Request.QueryString["success"] != null)
+                ViewBag.Success = Request.QueryString["success"];
+
             return View();
         }      
     }

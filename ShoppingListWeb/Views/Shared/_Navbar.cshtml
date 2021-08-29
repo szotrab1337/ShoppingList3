@@ -27,7 +27,7 @@
                     @UserIdentity.Fullname  <i style="margin-left:10px;" class="fas fa-user"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" style="margin-top:-10px;" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Konto</a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Account", "Account")">Konto</a></li>
                     @if (UserIdentity.Role == "Admin")
                     {
                         <li><a class="dropdown-item" href="#">Zarz¹dzaj u¿ytkownikami</a></li>
