@@ -10,60 +10,60 @@ using System.Web.Http;
 
 namespace ShoppingListWebAPI.Controllers
 {
-    public class ShopsController : ApiController
+    public class RecipesController : ApiController
     {
-        // GET api/shops
+        // GET api/recipes
         [HttpGet]
         public HttpResponseMessage Get()
         {
             Context context = new Context();
-            List<Shop> shops = context.Shops.ToList();
+            List<Recipe> recipes = context.Recipes.ToList();
 
             return new HttpResponseMessage()
             {
-                Content = new StringContent(JsonConvert.SerializeObject(shops, GenericJsonSerializerSettings.GetSettings()),
+                Content = new StringContent(JsonConvert.SerializeObject(recipes, GenericJsonSerializerSettings.GetSettings()),
                     System.Text.Encoding.UTF8, "application/json")
             };
         }
 
-        // GET api/shops/5
+        // GET api/recipes/5
         [HttpGet]
         public HttpResponseMessage Get(int id)
         {
             Context context = new Context();
-            Shop shop = context.Shops.FirstOrDefault(x => x.ShopId == id);
-            
+            Recipe recipe = context.Recipes.FirstOrDefault(x => x.RecipeId == id);
+
             return new HttpResponseMessage()
             {
-                Content = new StringContent(JsonConvert.SerializeObject(shop, GenericJsonSerializerSettings.GetSettings()),
+                Content = new StringContent(JsonConvert.SerializeObject(recipe, GenericJsonSerializerSettings.GetSettings()),
                     System.Text.Encoding.UTF8, "application/json")
             };
         }
 
-        // POST api/shops/1
+        // POST api/recipes/1
         [HttpPost]
-        public void Post(int id, [FromBody] Shop shop)
+        public void Post(int id, [FromBody] Recipe recipe)
         {
             using (Context context = new Context())
             {
-                shop.CreatedOn = DateTime.Now;
-                shop.Items.ForEach(x => x.CreatedOn = DateTime.Now);
+                recipe.CreatedOn = DateTime.Now;
 
-                context.Shops.AddOrUpdate(shop);
+                context.Recipes.AddOrUpdate(recipe);
                 context.SaveChanges();
             }
         }
 
-        //DELETE api/shops/5
+        //DELETE api/recipes/5
         [HttpDelete]
         public void Delete(int id)
         {
             using (Context context = new Context())
             {
-                Shop shop = context.Shops.FirstOrDefault(x => x.ShopId == id);
+                Recipe recipe = context.Recipes.FirstOrDefault(x => x.RecipeId == id);
 
-                context.Items.RemoveRange(shop.Items);
-                context.Shops.Remove(context.Shops.FirstOrDefault(x => x.ShopId == id));
+                context.MakingSteps.RemoveRange(recipe.MakingSteps);
+                context.Ingredients.RemoveRange(recipe.Ingredients);
+                context.Recipes.Remove(context.Recipes.FirstOrDefault(x => x.RecipeId == id));
                 context.SaveChanges();
             }
         }

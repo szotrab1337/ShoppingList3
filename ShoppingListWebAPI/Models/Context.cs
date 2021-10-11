@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 
 namespace ShoppingListWebAPI.Models
 {
@@ -10,6 +6,9 @@ namespace ShoppingListWebAPI.Models
     {
         public DbSet<Shop> Shops { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<MakingStep> MakingSteps { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
 
         public Context() : base("ShoppingList")
         {
