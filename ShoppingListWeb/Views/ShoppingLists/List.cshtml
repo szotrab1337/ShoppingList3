@@ -116,9 +116,9 @@
 
             var $row = jQuery(this).closest('tr');
             var $columns = $row.find('td');
-            var test = $columns[0].innerHTML;
+            var shopName = $columns[0].innerHTML;
 
-            document.getElementById("modalText").innerHTML = 'Czy na pewno chcesz usunąć sklep <b>' + test + '</b>? Usunięte zostaną również' +
+            document.getElementById("modalText").innerHTML = 'Czy na pewno chcesz usunąć sklep <b>' + shopName + '</b>? Usunięte zostaną również' +
                 ' przedmioty do niego przypisane';
 
             var id = $(this).closest('tr').data('id');

@@ -12,7 +12,7 @@
 }
 
 main > .container {
-    padding: 50px 15px 0;
+    padding: 15px 15px 15px 20px;
 }
 
 .field-validation-error {
@@ -172,3 +172,31 @@ body {
     display: inline;
 }
 
+#myRecipeCard{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    margin-bottom:20px;
+}
+
+.fill {
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-image: url('path/to/image.jpg');
+}
+
+.cover {
+    object-fit: cover;
+    height:250px;
+}
+
+.card {
+    margin: 0 auto; /* Added */
+    float: none; /* Added */
+    margin-bottom: 10px; /* Added */
+}
+
+.paragNoMargin p{
+    margin-top: 3px;
+    margin-bottom: 3px;
+}

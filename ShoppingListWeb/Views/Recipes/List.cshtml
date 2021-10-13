@@ -1,0 +1,91 @@
+﻿@using PagedList.Mvc;
+@using ShoppingListWeb.Models;
+@model PagedList.IPagedList<Recipe>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@if (ViewBag.Success != null)
+{
+    <div class="col-sm-12">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <span class="badge rounded-pill bg-success">Powodzenie!</span>
+            @ViewBag.Success
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" />
+        </div>
+    </div>
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="col-sm-12">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span class="badge rounded-pill bg-danger">Błąd danych!</span>
+            @ViewBag.Error
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" />
+        </div>
+    </div>
+}
+
+<div class="card">
+    <div class="card-header" style="display: table; width: 100%;">
+        <div class="d-flex justify-content-between">
+            <a href="@Url.Action("Index", new { controller = "Home" })" class="btn btn-secondary"><i class="fas fa-chevron-left"></i> Wstecz</a>
+            <a href="@Url.Action("AddNewRecipe")" class="btn btn-success rounded"><i class="fa fa-plus-circle"></i> Dodaj przepis</a>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-auto mr-auto">
+
+                <h3>
+                    Przepisy kulinarne
+                </h3>
+            </div>
+        </div>
+
+        <br />
+        <div class="row">
+            @foreach (Recipe Entry in Model)
+            {
+                <div class="card bg-light" id="myRecipeCard" style="width: 22rem; margin-right: 8px; margin-left: 8px; ">
+                    <div class="fill" style="height:250px;">
+
+                        @if (string.IsNullOrEmpty(Entry.PictureRaw))
+                        {
+                            <img src="~/images/Cars/noPhoto.png" class="card-img-top cover" alt="...">
+                        }
+                        else
+                        {
+                            <img src="@Entry.PictureFormatted" class="card-img-top cover" alt="...">
+                        }
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@Entry.Name</h5>
+                        <small class="card-text text-muted">@Entry.CreatedOn.ToString(@"yyyy-MM-dd")</small>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-light">Ilość porcji: @Entry.NumberOfServings</li>
+                        <li class="list-group-item bg-light">Czas przygotowywania: @Entry.FormattedTimeOfMakingTheRecipe</li>
+                        <li class="list-group-item bg-light">Ilość składników: @Entry.Ingredients.Count</li>
+                        <li class="list-group-item bg-light">Ilość kroków do wykonania: @Entry.MakingSteps.Count</li>
+                    </ul>
+                    <div class="card-body d-flex justify-content-around align-items-end">
+                        <a href="@Url.Action("RecipeDetails", new { id = Entry.RecipeId })" class="btn btn-secondary"><i class="fas fa-info-circle"></i> Szczegóły</a>
+                        <a href="@Url.Action("RecipeEdit", new { id = Entry.RecipeId })" class="btn btn-primary"><i class="fas fa-edit"></i> Edytuj</a>
+                        <a href="@Url.Action("RecipeDelete", new { id = Entry.RecipeId })" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Usuń</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="text-center" style="margin-top:-25px;">
+
+        @*Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount*@
+
+        @Html.PagedListPager(Model, page => Url.Action("List",
+            new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    </div>
+
+</div>

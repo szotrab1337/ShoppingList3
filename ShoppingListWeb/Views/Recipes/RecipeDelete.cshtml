@@ -1,0 +1,19 @@
+﻿@using ShoppingListWeb.Models;
+@model Recipe
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<form id="Form" method="post">
+    <div class="col col-sm-6 card cardCenter">
+        <div class="card-header" style="display: table; width: 100%;">
+            <div class="d-flex justify-content-between">
+                <a href="@Url.Action("List")" class="btn btn-secondary"><i class="fas fa-chevron-left"></i> Wstecz</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <input id="disabled-input" name="RecipeId" value="@Model.RecipeId" class="form-control" type="hidden">
+            <h5 class="card-title">Usuwanie przepisu</h5>
+            <p class="card-text">Czy na pewno chcesz usunąć przepis <b>@Model.Name</b>?</p>
+            <button type="submit" class="btn btn-danger float-end"><i class="fas fa-trash-alt"></i> Usuń</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,96 @@
+﻿@using ShoppingListWeb.Models;
+@model Recipe
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="col col-sm-8 card cardCenter">
+    <div class="card-header" style="display: table; width: 100%;">
+        <div class="d-flex justify-content-between">
+            <a href="@Url.Action("List")" class="btn btn-secondary"><i class="fas fa-chevron-left"></i> Wstecz</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row justify-content-between">
+            <div class="col">
+                <h3 class="card-title">
+                    @if (Model.RecipeId > 0)
+                    {
+                        @Model.Name
+                    }
+                    else
+                    {
+                        <text>Nowy przepis</text>
+                    }
+                </h3>
+                <br />
+                <input id="disabled-input" name="RecipeId" value="@Model.RecipeId" class="form-control" type="hidden" />
+
+                <div class="row">
+                    <div class="col">
+                        <label for="NumberOfSeverings" class="form-label">Ilość porcji</label>
+                        <input type="text" name="NumberOfSeverings" class="form-control"
+                               id="NumberOfSeverings" placeholder="ilość porcji" value="@Model.NumberOfServings">
+                    </div>
+                    <div class="col">
+                        <label for="TimeOfMakingTheRecipe" class="form-label">Czas wykonania</label>
+                        <input type="text" name="TimeOfMakingTheRecipe" class="form-control"
+                               id="TimeOfMakingTheRecipe" placeholder="czas wykonania (min)"
+                               value="@Model.TimeOfMakingTheRecipeMinutes">
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col">
+                        <label for="Source" class="form-label">Źródło</label>
+                        <input type="text" name="Source" class="form-control"
+                               id="Source" placeholder="ilość porcji" value="@Model.Source">
+                    </div>
+                </div>
+
+            </div>
+            <div class="col fill" style="height:250px; width:360px;">
+                @if (string.IsNullOrEmpty(Model.PictureRaw))
+                {
+                    <img src="~/images/Cars/noPhoto.png" class="card-img-top cover" alt="...">
+                }
+                else
+                {
+                    <img src="@Model.PictureFormatted" class="card-img-top cover" alt="...">
+                }
+            </div>
+        </div>
+        <br />
+        <div class="row paragNoMargin">
+            <div class="col">
+                <h5>Lista składników</h5>
+                @{int i = 1; }
+                @foreach (Ingredient ingredient in Model.Ingredients.OrderBy(x => x.Number))
+                {
+                    <p>
+                        <b>@i.</b> &nbsp;@ingredient.Name <i>[@ingredient.QuantityFormatted]</i>
+                        <a href="@Url.Action("IngredientEdit", new { id = ingredient.IngredientId })" class="link-primary">Edytuj</a>&nbsp; 
+                        <a href="@Url.Action("IngredientDelete", new { id = ingredient.IngredientId})" class="link-danger">Usuń</a>
+                    </p>
+                    i++;
+                }
+            </div>
+            <div class="col">
+                <h5>Instrukcja wykonania</h5>
+                @{i = 1; }
+                @foreach (MakingStep makingStep in Model.MakingSteps.OrderBy(x => x.Number))
+                {
+                    <p>
+                        <b>@i.</b> &nbsp;@makingStep.Name
+                        <a href="@Url.Action("MakingStepEdit", new { id = makingStep.MakingStepId })" class="link-primary">Edytuj</a>&nbsp;
+                        <a href="@Url.Action("MakingStepDelete", new { id = makingStep.MakingStepId})" class="link-danger">Usuń</a>
+                    </p>
+                    i++;
+                }
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-end">
+        <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Zapisz</button>
+    </div>
+</div>
+
+

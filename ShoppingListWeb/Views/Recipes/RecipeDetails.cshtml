@@ -1,0 +1,68 @@
+﻿@using ShoppingListWeb.Models;
+@model Recipe
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="col col-sm-8 card cardCenter">
+    <div class="card-header" style="display: table; width: 100%;">
+        <div class="d-flex justify-content-between">
+            <a href="@Url.Action("List")" class="btn btn-secondary"><i class="fas fa-chevron-left"></i> Wstecz</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row justify-content-between">
+            <div class="col">
+                <h3 class="card-title">@Model.Name</h3>
+                <br/>
+                <div class="paragNoMargin">
+                    <p>Ilość porcji: <b><i>@Model.NumberOfServings</i></b></p>
+                    <p>Czas wykonania: <b><i>@Model.FormattedTimeOfMakingTheRecipe</i></b></p>
+                    @if (!string.IsNullOrWhiteSpace(Model.Source))
+                    {
+                        <p>Źródło: <a href="@Model.Source"><i>Link</i></a> </p>
+                    }
+                </div>
+            </div>
+            <div class="col fill" style="height:250px; width:360px;">
+                @if (string.IsNullOrEmpty(Model.PictureRaw))
+                {
+                    <img src="~/images/Cars/noPhoto.png" class="card-img-top cover" alt="...">
+                }
+                else
+                {
+                    <img src="@Model.PictureFormatted" class="card-img-top cover" alt="...">
+                }
+            </div>
+        </div>
+        <br/>
+        <div class="row paragNoMargin">
+            @{int i = 1; }
+            @if (Model.Ingredients.Count > 0)
+            {
+                <div class="col">
+                    <h5>Lista składników</h5>
+                    @{i = 1; }
+                    @foreach (Ingredient ingredient in Model.Ingredients.OrderBy(x => x.Number))
+                    {
+                        <p><b>@i.</b> &nbsp;@ingredient.Name <i>[@ingredient.QuantityFormatted]</i></p>
+                        i++;
+                    }
+                </div>
+            }
+            @if (Model.MakingSteps.Count > 0)
+            {
+                <div class="col">
+                    <h5>Instrukcja wykonania</h5>
+                    @{i = 1; }
+                    @foreach (MakingStep makingStep in Model.MakingSteps.OrderBy(x => x.Number))
+                    {
+                        <p><b>@i.</b> &nbsp;@makingStep.Name</p>
+                        i++;
+                    }
+                </div>
+             }
+            </div>
+    </div>
+    <div class="card-footer text-end">
+        <small>Utworzono: <b><i>@Model.CreatedOn.ToString(@"yyyy-MM-dd")</i></b></small>
+    </div>
+</div>

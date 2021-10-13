@@ -12,6 +12,7 @@ namespace ShoppingListWeb.Models
         public DbSet<Item> Items { get; set; }
         public DbSet<Unit> Units{ get; set; }
         public DbSet<User> Users{ get; set; }
+        public DbSet<Recipe> Recipes { get; set; }
 
         public Context() : base("ShoppingList")
         {
