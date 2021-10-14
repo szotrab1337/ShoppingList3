@@ -1,7 +1,99 @@
-﻿
-@{
-    ViewBag.Title = "IngredientEdit";
+﻿@using ShoppingListWeb.Models;
+@model Ingredient
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@if (ViewBag.Success != null)
+{
+    <div class="col-sm-6 elementCenter">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <span class="badge rounded-pill bg-success">Powodzenie!</span>
+            @ViewBag.Success
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" />
+        </div>
+    </div>
 }
 
-<h2>IngredientEdit</h2>
+@if (ViewBag.Error != null)
+{
+    <div class="col-sm-6 elementCenter">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span class="badge rounded-pill bg-danger">Błąd danych!</span>
+            @ViewBag.Error
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" />
+        </div>
+    </div>
+}
+
+<form method="post">
+    <div class="card col col-sm-6">
+        <div class="card-header" style="display: table; width: 100%;">
+            <a href="@Url.Action("RecipeEdit", new { id = ViewBag.RecipeId })" class="btn btn-secondary rounded" style="float: left;"><i class="fas fa-chevron-left"></i> Wstecz</a>
+        </div>
+        <div class="card-body">
+            @if (Model.IngredientId > 0)
+            {
+                <h4 class="card-title">Edycja składnika</h4>
+            }
+            else
+            {
+                <h4 class="card-title">Nowy składnik</h4>
+            }
+            <br />
+            <input id="disabled-input" name="IngredientId" value="@Model.IngredientId" class="form-control" type="hidden">
+            <input id="disabled-input" name="RecipeId" value="@Model.RecipeId" class="form-control" type="hidden">
+            <div class="row">
+                <div class="col">
+                    <label for="Name" class="form-label">Nazwa</label>
+                    <input type="text" name="Name" class="form-control"
+                           id="Name" placeholder="nazwa składnika" value="@Model.Name">
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col">
+                    <label for="Quantity" class="form-label">Ilość</label>
+                    <input type="text" name="Quantity" class="form-control" id="Quantity" placeholder="ilość np. 3" value="@Model.Quantity">
+                </div>
+                <div class="col">
+                    <label for="UnitId" class="form-label">Jednostka</label>
+                    <select name="UnitId" id="UnitId" class="form-control form-select">
+                        @foreach (Unit unit in Model.AvailableUnits)
+                        {
+                            <option value="@unit.UnitId" @if (Model.UnitId == unit.UnitId) { <text> selected</text> }>
+                                @unit.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-success float-end"><i class="fas fa-check"></i> Zapisz</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+
+        $(document).ready(function () {
+            Validate();
+        });
+
+        $('#Quantity').keyup(function () {
+            Validate();
+        });
+
+        function Validate() {
+            var quantityValue = $('#Quantity').val();
+
+            if (quantityValue == null || quantityValue == '' || quantityValue <= 0) {
+                $('#UnitId').prop('disabled', true);
+            }
+            else {
+                $('#UnitId').prop('disabled', false);
+            }
+        }
+    });
+</script>
 

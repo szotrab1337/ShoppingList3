@@ -196,6 +196,12 @@ body {
     margin-bottom: 10px; /* Added */
 }
 
+.elementCenter {
+    margin: 0 auto; /* Added */
+    float: none; /* Added */
+    margin-bottom: 10px; /* Added */
+}
+
 .paragNoMargin p{
     margin-top: 3px;
     margin-bottom: 3px;

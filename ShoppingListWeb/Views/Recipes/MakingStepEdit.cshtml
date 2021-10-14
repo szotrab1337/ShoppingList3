@@ -1,7 +1,56 @@
-﻿
-@{
-    ViewBag.Title = "MakingStepEdit";
+﻿@using ShoppingListWeb.Models;
+@model MakingStep
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@if (ViewBag.Success != null)
+{
+    <div class="col-sm-6 elementCenter">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <span class="badge rounded-pill bg-success">Powodzenie!</span>
+            @ViewBag.Success
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" />
+        </div>
+    </div>
 }
 
-<h2>MakingStepEdit</h2>
+@if (ViewBag.Error != null)
+{
+    <div class="col-sm-6 elementCenter">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span class="badge rounded-pill bg-danger">Błąd danych!</span>
+            @ViewBag.Error
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" />
+        </div>
+    </div>
+}
 
+<form method="post">
+    <div class="card col col-sm-6">
+        <div class="card-header" style="display: table; width: 100%;">
+            <a href="@Url.Action("RecipeEdit", new { id = ViewBag.RecipeId })" class="btn btn-secondary rounded" style="float: left;"><i class="fas fa-chevron-left"></i> Wstecz</a>
+        </div>
+        <div class="card-body">
+            @if (Model.MakingStepId > 0)
+            {
+                <h4 class="card-title">Edycja kroku</h4>
+            }
+            else
+            {
+                <h4 class="card-title">Nowy krok</h4>
+            }
+            <br />
+            <input id="disabled-input" name="MakingStepId" value="@Model.MakingStepId" class="form-control" type="hidden">
+            <input id="disabled-input" name="RecipeId" value="@Model.RecipeId" class="form-control" type="hidden">
+            <div class="row">
+                <div class="col">
+                    <label for="Name" class="form-label">Nazwa</label>
+                    <textarea type="text" name="Name" class="form-control"
+                           id="Name" placeholder="nazwa składnika" value="@Model.Name"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-success float-end"><i class="fas fa-check"></i> Zapisz</button>
+        </div>
+    </div>
+</form>

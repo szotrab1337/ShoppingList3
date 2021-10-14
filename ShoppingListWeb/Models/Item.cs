@@ -36,7 +36,7 @@ namespace ShoppingListWeb.Models
                 List<Unit> availableUnits = new List<Unit>();
                 using (Context context = new Context())
                 {
-                    availableUnits = context.Units.ToList();
+                    availableUnits = context.Units.Where(x => x.ForShopping.Value).ToList();
                 }
 
                 return  availableUnits;

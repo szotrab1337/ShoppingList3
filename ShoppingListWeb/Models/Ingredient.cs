@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace ShoppingListWeb.Models
 {
@@ -21,5 +23,31 @@ namespace ShoppingListWeb.Models
 
         [NotMapped]
         public string QuantityFormatted => Quantity.HasValue ? Quantity.ToString() + " " + Unit.ShortName : string.Empty;
+
+        [NotMapped]
+        public List<Unit> AvailableUnits
+        {
+            get
+            {
+                List<Unit> availableUnits = new List<Unit>();
+                using (Context context = new Context())
+                {
+                    availableUnits = context.Units.ToList();
+                }
+
+                return availableUnits;
+            }
+        }
+
+        public string ValidateItem()
+        {
+            if (string.IsNullOrWhiteSpace(Name))
+                return "Nazwa składnika nie może być pusta.";
+
+            if (Quantity.HasValue && Quantity.Value <= 0)
+                return "Ilość nie może być mniejsza lub równa zero.";
+
+            return string.Empty;
+        }
     }
 }
